@@ -47,7 +47,7 @@ body {
 }
 
 .header-title {
-  max-height: 70px;
+  max-height: 50px;
   height: auto;
   width: auto;
   pointer-events: auto; /* il titolo è comunque cliccabile se serve */
@@ -56,6 +56,7 @@ body {
 /* =========================
    FOOTER FISSO IN BASSO (ICONE SEMPRE VISIBILI)
    ========================== */
+
 .footer {
   position: absolute;
   bottom: 8px;
@@ -65,13 +66,30 @@ body {
 
   display: flex;
   align-items: center;
+}
+
+/* Gruppo loghi a sinistra */
+.footer-logos {
+  display: flex;
+  align-items: center;
   gap: 16px;
 }
 
+/* Loghi (sinistra) */
 .footer-logo {
   height: 40px;
   width: auto;
 }
+
+/* Footer.png allineata a destra */
+.footer-banner {
+  margin-left: auto;   /* spinge l'immagine a destra */
+  margin-right: 8px;   /* piccolo distacco dal bordo destro */
+  height: 48px;        /* stessa altezza dei loghi */
+  width: auto;         /* mantiene proporzioni */
+}
+
+
 
 /* =========================
    LAYOUT PRINCIPALE (MAPPA + SIDEBAR)
@@ -113,7 +131,7 @@ body {
   flex-direction: column;
   gap: 8px;
 
-  overflow-y: auto;   /* 🔴 SOLO QUI SI SCORRE */
+  overflow-y: auto;   /* SOLO QUI SI SCORRE */
   padding-right: 4px;
 }
 
@@ -145,11 +163,16 @@ body {
 @media (orientation: portrait) {
 
   .header-title {
-    max-height: 56px;
+    max-height: 40px;
   }
 
   .footer-logo {
     height: 32px;
+  }
+
+
+  .footer-banner {
+    height: 36px;
   }
 
   .main-layout {
@@ -162,7 +185,17 @@ body {
 
   .sidebar {
     flex: 1;      /* occupa lo spazio restante, scorre se non entra */
+    align-items: flex-start;      /* centra il contenuto nella colonna */
   }
+
+  .sidebar-button {
+      width: 70%;              /* non più 100% */
+      max-width: 70%;           /* 🔹 riduci la larghezza (proporzioni ok) */
+      height: auto;             /* mantiene proporzioni dell’immagine */
+      margin: 4px 0;         /* 🔹 centra orizzontalmente */
+      display: block;
+  }
+
 }
 
 /* =========================
@@ -173,11 +206,15 @@ body {
 @media (orientation: landscape) {
 
   .header-title {
-    max-height: 60px;
+    max-height: 45px;
   }
 
   .footer-logo {
     height: 36px;
+  }
+
+  .footer-banner {
+    height: 42px;
   }
 
   .main-layout {
@@ -188,6 +225,13 @@ body {
     width: 230px;     /* colonna verticale a destra */
     max-width: 35%;
   }
+
+  .sidebar-button {
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+
 }
 
 /* POPUP LEAFLET (come prima) */
