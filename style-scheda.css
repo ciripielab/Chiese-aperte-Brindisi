@@ -1,0 +1,111 @@
+/* Reset base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #ffffff;
+  color: #222;
+  padding: 20px;
+}
+
+/* Contenitore centrale */
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+/* Titolo */
+h1 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Immagine del POI (opzionale) */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 0 auto 15px;
+  display: block;
+}
+
+/* Testi */
+p {
+  margin-bottom: 12px;
+  text-align: justify;
+}
+
+strong {
+  display: inline-block;
+  font-weight: bold;
+}
+
+/* Bottone: Indicazioni (verde) */
+.bottone-indicazioni {
+  display: inline-block;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 10px;
+}
+
+.bottone-indicazioni:hover {
+  background-color: #1e7e34;
+}
+
+/* Bottone: Torna alla mappa (blu con freccia) */
+.bottone-mappa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #0066cc;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.bottone-mappa:hover {
+  background-color: #004c99;
+}
+
+.bottone-mappa .freccia {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+/* Responsive per schermi piccoli */
+@media (max-width: 480px) {
+  html, body {
+    font-size: 15px;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .bottone-indicazioni,
+  .bottone-mappa {
+    font-size: 15px;
+    padding: 10px 16px;
+  }
+}

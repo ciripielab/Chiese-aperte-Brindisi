@@ -1,0 +1,101 @@
+[
+  {
+    "id": "chiesa-cattedrale",
+    "nome": "Chiesa Cattedrale",
+    "descrizione": "Chiesa principale della città dedicata a San Giovanni Battista.",
+    "lat": 40.640290661,
+    "lng": 17.945349285,
+    "icona": "immagini/POI_Cattedrale.png",
+    "immagine": "immagini/chiesa-cattedrale.jpg",
+    "scheda": "scheda.html?id=chiesa-cattedrale",
+    "colore": "#ec674d"
+  },
+  {
+    "id": "chiesa-santa-teresa",
+    "nome": "Chiesa di Santa Teresa",
+    "descrizione": "L'opera di Giuseppe Zimbalo completata nel 1697 è un esempio di architettura barocca.",
+    "lat": 40.6407597465442,
+    "lng": 17.9437549201313,
+    "icona": "immagini/POI_SantaTeresa.png",
+    "immagine": "immagini/santateresa.jpg",
+    "scheda": "scheda.html?id=chiesa-santa-teresa",
+    "colore": "#5bbca8"
+  },
+  {
+    "id": "sanmichele-arcangelo",
+    "nome": "Chiesa di San Michele Arcangelo",
+    "descrizione": "La Chiesa Rettoria San Michele Arcangelo, conosciuta anche come Scuole Pie, è una chiesa cattolica del XVII secolo.",
+    "lat": 40.639762903005,
+    "lng": 17.9436007805546,
+    "icona": "immagini/POI_SanMichele.png",
+    "immagine": "immagini/sanmichele-arcangelo.jpg",
+    "scheda": "scheda.html?id=sanmichele-arcangelo",
+    "colore": "#f8ab1f"
+  },
+  {
+    "id": "chiesa-san-paolo",
+    "nome": "Chiesa di San Paolo",
+    "descrizione": "La chiesa di San Paolo eremita è una chiesa gotica eretta dai francescani.",
+    "lat": 40.639747510472,
+    "lng": 17.9421278926115,
+    "icona": "immagini/POI_SanPaolo.png",
+    "immagine": "immagini/chiesa-san-paolo.jpg",
+    "scheda": "scheda.html?id=chiesa-san-paolo",
+    "colore": "#7f4997"
+  },
+  {
+    "id": "chiesa-san-benedetto",
+    "nome": "Chiesa di Sant Benedetto",
+    "descrizione": "La chiesa di San Benedetto è un edificio sacro romanico. Aperta al culto, è stata sede della Parrocchia di Sant'Anna e di San Benedetto.",
+    "lat": 40.63817865533,
+    "lng": 17.941338900781,
+    "icona": "immagini/POI_SanBenedetto.png",
+    "immagine": "immagini/chiesa-san-benedetto.jpg",
+    "scheda": "scheda.html?id=chiesa-san-benedetto",
+    "colore": "#fff7ea"
+  },
+  {
+    "id": "chiesa-santamaria-angeli",
+    "nome": "chiesa di Santa Maria degli Angeli",
+    "descrizione": "Fatta costruire nel 1609 dal santo Lorenzo da Brindisi su terreni di sua proprietà, venne destinata alle suore clarisse di Brindisi.",
+    "lat": 40.637644619431,
+    "lng": 17.942978882195,
+    "icona": "immagini/POI_Angeli.png",
+    "immagine": "immagini/chiesa-santamaria-angeli.jpg",
+    "scheda": "scheda.html?id=chiesa-santamaria-angeli",
+    "colore": "#ec674d"
+  },
+  {
+    "id": "chiesa-del-cristo",
+    "nome": "Chiesa del Cristo dei Domenicani",
+    "descrizione": "La chiesa del Cristo o del Crocifisso (anche chiesa di San Domenico), fu eretta nel 1232 da frate Nicola Paglia di Giovinazzo, fu insediamento dei Domenicani.",
+    "lat": 40.6329245167545,
+    "lng": 17.94640001610233,
+    "icona": "immagini/POI_Cristo.png",
+    "immagine": "immagini/chiesa-del-cristo.jpg",
+    "scheda": "scheda.html?id=chiesa-del-cristo",
+    "colore": "#5bbca8"
+  },
+  {
+    "id": "chiesa-san-sebastiano",
+    "nome": "Chiesa di San Sebastiano",
+    "descrizione": "Costruita nel 1670 come chiesa per l'Arciconfraternita del Purgatorio, fondata ufficialmente nel 1668 e munita di regio assenso il 2 dicembre 1776.",
+    "lat": 40.6359972210936,
+    "lng": 17.9457108848611,
+    "icona": "immagini/POI_SanSebastiano.png",
+    "immagine": "immagini/chiesa-san-sebastiano.jpg",
+    "scheda": "scheda.html?id=chiesa-san-sebastiano",
+    "colore": "#f8ab1f"
+  },
+  {
+    "id": "chiesa-santa-lucia",
+    "nome": "Chiesa di Santa  Lucia",
+    "descrizione": "Nella chiesa della Santissima Trinità o di Santa Lucia, sita nel centro storico di Brindisi, fu costituita una delle più antiche parrocchie di Brindisi e come tale funziona ancora oggi.",
+    "lat": 40.6357132464398,
+    "lng": 17.9464378489296,
+    "icona": "immagini/POI_SantaLucia.png",
+    "immagine": "immagini/chiesa-santa-lucia.jpg",
+    "scheda": "scheda.html?id=chiesa-santa-lucia",
+    "colore": "#7f4997"
+  }
+] 

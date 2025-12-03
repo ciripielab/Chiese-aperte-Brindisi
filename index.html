@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
+  <title>Mappa Chiese Aperte</title>
+
+  <!-- PWA / Fullscreen-ish -->
+  <meta name="theme-color" content="#000000" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Il tuo CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div class="page">
+
+    <!-- HEADER con titolo in alto a destra -->
+    <header class="header">
+      <!-- Se vuoi qualcosa a sinistra puoi metterlo qui -->
+      <div class="header-spacer"></div>
+      <img
+        src="immagini/Titolo_ChieseAperte.png"
+        alt="Chiese aperte"
+        class="header-title"
+      />
+    </header>
+
+    <!-- CONTENUTO PRINCIPALE: mappa + pulsanti a destra -->
+    <main class="main-layout">
+      <section class="map-wrapper">
+        <div id="map"></div>
+      </section>
+
+      <aside class="sidebar">
+
+        <img src="immagini/Pulsante_Cattedrale.png"
+            alt="Chiesa Cattedrale"
+            class="sidebar-button"
+            data-poi-id="chiesa-cattedrale">
+
+        <img src="immagini/Pulsante_SantaTeresa.png"
+            alt="Chiesa di Santa Teresa"
+            class="sidebar-button"
+            data-poi-id="chiesa-santa-teresa">
+
+        <img src="immagini/Pulsante_ScuolePie.png"
+            alt="Chiesa di San Michele Arcangelo"
+            class="sidebar-button"
+            data-poi-id="sanmichele-arcangelo">
+
+        <img src="immagini/Pulsante_SanPaolo.png"
+            alt="Chiesa di San Paolo"
+            class="sidebar-button"
+            data-poi-id="chiesa-san-paolo">
+
+        <img src="immagini/Pulsante_SanBenedetto.png"
+            alt="Chiesa di San Benedetto"
+            class="sidebar-button"
+            data-poi-id="chiesa-san-benedetto">
+
+        <img src="immagini/Pulsante_Angeli.png"
+            alt="Chiesa di Santa Maria degli Angeli"
+            class="sidebar-button"
+            data-poi-id="chiesa-santamaria-angeli">
+
+        <img src="immagini/Pulsante_Cristo.png"
+            alt="Chiesa del Cristo dei Domenicani"
+            class="sidebar-button"
+            data-poi-id="chiesa-del-cristo">
+
+        <img src="immagini/Pulsante_Anime.png"
+            alt="Chiesa di San Sebastiano"
+            class="sidebar-button"
+            data-poi-id="chiesa-san-sebastiano">
+
+        <img src="immagini/Pulsante_SantaLucia.png"
+            alt="Chiesa di Santa Lucia"
+            class="sidebar-button"
+            data-poi-id="chiesa-santa-lucia">
+          
+      </aside>
+    </main>
+
+    <!-- FOOTER con i 3 loghi -->
+    <footer class="footer">
+      <img src="immagini/Logo3.png" alt="Logo 3" class="footer-logo">
+      <img src="immagini/Logo2.png" alt="Logo 2" class="footer-logo">
+      <img src="immagini/Logo1.png" alt="Logo 1" class="footer-logo">
+    </footer>
+
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- Il tuo script esistente per la mappa -->
+  <script src="script.js"></script>
+</body>
+</html>
