@@ -12,12 +12,15 @@ html, body {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-image: url("immagini/sfondo_pagina.png"); /* <-- cambia nome se serve */
+  /*
+  background-image: url("immagini/sfondo_pagina.png"); /*
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  */
+  background-color: #f0dabb;
   color: #222;
-  overflow: hidden;           /* 🔴 pagina NON scorre */
+  overflow: hidden;           /* pagina NON scorre */
 }
 
 /* CONTENITORE PRINCIPALE A SCHERMO INTERO */
