@@ -7,7 +7,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Oggetto per tenere traccia dei marker per id
+// Oggetto per tenere traccia dei marker per id (per i pulsanti laterali)
 const markersById = {};
 
 
@@ -24,7 +24,7 @@ fetch('pois.json?nocache=' + Date.now())  // evita cache vecchia del JSON
 
       // -------------------------------------------
       // ICONA PERSONALIZZATA (mantiene proporzioni)
-      // file originali 142x227, ridotti proporzionalmente
+      // I file originali sono 142x227, li riduciamo
       // -------------------------------------------
       const originalWidth = 142;
       const originalHeight = 227;
@@ -66,7 +66,7 @@ fetch('pois.json?nocache=' + Date.now())  // evita cache vecchia del JSON
           <p style="margin: 6px 0; font-size: 14px;">
             ${punto.descrizione}
           </p>
-          <a href="${punto.scheda}">
+          <a href="schedapoi.html?id=${encodeURIComponent(punto.id)}">
             <button style="
               padding: 6px 12px;
               margin-top: 6px;
@@ -90,7 +90,12 @@ fetch('pois.json?nocache=' + Date.now())  // evita cache vecchia del JSON
     });
 
     // Adatta automaticamente la mappa per includere tutti i POI
-    map.fitBounds(bounds, { padding: [30, 30] });
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [30, 30] });
+    } else {
+      // fallback nel caso bounds fosse vuoto
+      map.setView([40.6389, 17.9458], 16);
+    }
 
     // Dopo che i marker sono pronti, colleghiamo i pulsanti laterali
     collegaPulsantiSidebar();
@@ -123,8 +128,8 @@ function collegaPulsantiSidebar() {
       // Chiudo eventuali popup aperti
       map.closePopup();
 
-      // Uso flyTo per un movimento più netto
-      const targetZoom = 18; // puoi provare anche 19 se vuoi più vicino
+      // Uso flyTo per un movimento più evidente
+      const targetZoom = 18; // puoi portare a 19 se vuoi ancora più vicino
 
       map.flyTo(latLng, targetZoom, {
         animate: true,
@@ -138,4 +143,3 @@ function collegaPulsantiSidebar() {
     });
   });
 }
-

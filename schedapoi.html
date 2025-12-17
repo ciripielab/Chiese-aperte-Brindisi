@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Chiese Aperte – Scheda POI</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Titolo in alto a destra (come in index) */
+    .scheda-title {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 1100;
+      display: flex;
+      justify-content: flex-end;
+      pointer-events: none;
+    }
+
+    .scheda-title .header-title {
+      pointer-events: auto;
+    }
+
+    /* Sezione 1: fascia bianca quasi a tutta larghezza */
+    .poi-header {
+      position: absolute;
+      /* La mettiamo subito sotto il titolo.
+         Se vuoi più/meno spazio tra titolo e fascia, cambia questo valore. */
+      top: 70px;
+
+      left: 8px;   /* stesso margine del titolo */
+      right: 8px;  /* stesso margine del titolo */
+      z-index: 1100;
+
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 10px 12px 10px 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+
+    .poi-header img {
+      height: 128px;
+      width: auto;
+      display: block;
+    }
+
+    .poi-header .poi-name {
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 1.2;
+      text-align: left;
+      color: #222;
+    }
+
+    .poi-header-right {
+      margin-left: 0;          /* niente spinta a destra */
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; /* 🔹 allineamento a sinistra */
+      gap: 10px;
+    }
+
+
+    /* Spazio "di sicurezza" nel layout, così la fascia non copre il contenuto futuro */
+    .scheda-content {
+      position: absolute;
+      top: 140px;     /* sotto titolo + fascia */
+      bottom: 80px;   /* sopra footer */
+      left: 8px;
+      right: 8px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 480px) {
+      .poi-header { top: 62px; }
+      .poi-header img { height: 38px; }
+      .poi-header .poi-name { font-size: 15px; }
+      .scheda-content { top: 128px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <!-- Titolo in alto a destra -->
+    <div class="scheda-title">
+      <img
+        src="immagini/Titolo_ChieseAperte.png"
+        alt="Chiese Aperte"
+        class="header-title"
+        id="titolo-app"
+      />
+    </div>
+
+    <!-- SEZIONE 1: fascia bianca con icona + nome POI -->
+    <section class="poi-header" aria-label="Intestazione POI">
+      <div class="poi-header-right">
+        <img id="poiIcona" alt="Icona POI" />
+        <div id="poiNome" class="poi-name">Caricamento...</div>
+      </div>
+    </section>
+
+
+    <!-- Qui metteremo Sezione 2 e 3 -->
+    <main class="scheda-content">
+      <!-- Vuoto per ora -->
+    </main>
+
+    <!-- Footer identico a index -->
+    <footer class="footer">
+      <div class="footer-logos">
+        <img src="immagini/Logo3.png" alt="Logo 3" class="footer-logo" />
+        <img src="immagini/Logo2.png" alt="Logo 2" class="footer-logo" />
+        <img src="immagini/Logo1.png" alt="Logo 1" class="footer-logo" />
+      </div>
+      <img src="immagini/Footer.png" alt="Footer decorativo" class="footer-banner" />
+    </footer>
+
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    const poiIconaEl = document.getElementById('poiIcona');
+    const poiNomeEl = document.getElementById('poiNome');
+
+    if (!id) {
+      poiNomeEl.textContent = 'POI non specificato';
+      poiIconaEl.style.display = 'none';
+    } else {
+      fetch('pois.json?nocache=' + Date.now())
+        .then(res => res.json())
+        .then(punti => {
+          const poi = punti.find(p => p.id === id);
+
+          if (!poi) {
+            poiNomeEl.textContent = 'POI non trovato';
+            poiIconaEl.style.display = 'none';
+            return;
+          }
+
+          poiNomeEl.textContent = poi.nome || '';
+
+          if (poi.iconapoi) {
+            poiIconaEl.src = poi.iconapoi;
+            poiIconaEl.style.display = 'block';
+          } else {
+            poiIconaEl.style.display = 'none';
+          }
+        })
+        .catch(err => {
+          console.error('Errore caricamento pois.json:', err);
+          poiNomeEl.textContent = 'Errore nel caricamento';
+          poiIconaEl.style.display = 'none';
+        });
+    }
+  </script>
+</body>
+</html>
