@@ -48,7 +48,7 @@
 
     .poi-header .poi-name {
       font-weight: 700;
-      font-size: 32px;
+      font-size: 24px;
       line-height: 1.2;
       text-align: left;
       color: #222;
@@ -57,7 +57,7 @@
     .poi-header-right {
       margin-left: 0;          /* niente spinta a destra */
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: flex-start; /* 🔹 allineamento a sinistra */
       gap: 10px;
     }
@@ -144,6 +144,10 @@
           }
 
           poiNomeEl.textContent = poi.nome || '';
+
+          // Colore del nome preso dal JSON
+          poiNomeEl.style.color = poi.colore || '#222';
+
 
           if (poi.iconapoi) {
             poiIconaEl.src = poi.iconapoi;
