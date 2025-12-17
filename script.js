@@ -66,7 +66,7 @@ fetch('pois.json?nocache=' + Date.now())  // evita cache vecchia del JSON
           <p style="margin: 6px 0; font-size: 14px;">
             ${punto.descrizione}
           </p>
-          <a href="schedapoi.html?id=${encodeURIComponent(punto.id)}">
+          <a href="./schedapoi.html?id=${encodeURIComponent(punto.id)}">
             <button style="
               padding: 6px 12px;
               margin-top: 6px;
