@@ -77,11 +77,15 @@
     }
 
     @media (max-width: 480px) {
-      .poi-header { top: 62px; }
-      .poi-header img { height: 128px; } /* lascia 128 anche su portrait piccolo se ti piace */
-      .poi-header .poi-name { font-size: 24px; }
-      .scheda-content { top: 128px; }
+      :root{
+        --poi-icon-h: 64px;
+        --poi-name-size: 16px;
+        --poi-pad-v: 7px;
+        --poi-top: 58px;
+      }
+      .scheda-content { top: 120px; }
     }
+
 
     /* In landscape riduciamo fascia + icona + testo */
     @media (orientation: landscape){
