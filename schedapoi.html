@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="style.css" />
 
   <style>
-    /* Titolo in alto a destra (come in index) */
     .scheda-title {
       position: absolute;
       top: 8px;
@@ -23,21 +22,25 @@
       pointer-events: auto;
     }
 
-    /* Sezione 1: fascia bianca quasi a tutta larghezza */
     .poi-header {
       position: absolute;
-      /* La mettiamo subito sotto il titolo.
-         Se vuoi più/meno spazio tra titolo e fascia, cambia questo valore. */
       top: 70px;
-
-      left: 8px;   /* stesso margine del titolo */
-      right: 8px;  /* stesso margine del titolo */
+      left: 8px;
+      right: 8px;
       z-index: 1100;
 
       background: #ffffff;
       border-radius: 10px;
       padding: 10px 12px 10px 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+
+    .poi-header-right {
+      margin-left: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      gap: 10px;
     }
 
     .poi-header img {
@@ -51,23 +54,13 @@
       font-size: 24px;
       line-height: 1.2;
       text-align: left;
-      color: #222;
+      color: #222; /* verrà sovrascritto da JS con poi.colore */
     }
 
-    .poi-header-right {
-      margin-left: 0;          /* niente spinta a destra */
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-start; /* 🔹 allineamento a sinistra */
-      gap: 10px;
-    }
-
-
-    /* Spazio "di sicurezza" nel layout, così la fascia non copre il contenuto futuro */
     .scheda-content {
       position: absolute;
-      top: 140px;     /* sotto titolo + fascia */
-      bottom: 80px;   /* sopra footer */
+      top: 140px;
+      bottom: 80px;
       left: 8px;
       right: 8px;
       overflow: hidden;
@@ -75,34 +68,29 @@
 
     @media (max-width: 480px) {
       .poi-header { top: 62px; }
-      .poi-header img { height: 38px; }
-      .poi-header .poi-name { font-size: 15px; }
+      .poi-header img { height: 128px; } /* lascia 128 anche su portrait piccolo se ti piace */
+      .poi-header .poi-name { font-size: 24px; }
       .scheda-content { top: 128px; }
     }
 
     /* In landscape riduciamo fascia + icona + testo */
     @media (orientation: landscape) {
-
       .poi-header{
-        padding: 8px 12px 8px 16px; /* meno “altezza” del riquadro */
+        padding: 8px 12px 8px 16px;
       }
-
       .poi-header img{
-        height: 96px;  /* prima 128px */
+        height: 96px;
       }
-
       .poi-header .poi-name{
-        font-size: 20px; /* prima 24px */
+        font-size: 20px;
       }
     }
-
   </style>
 </head>
 
 <body>
   <div class="page">
 
-    <!-- Titolo in alto a destra -->
     <div class="scheda-title">
       <img
         src="immagini/Titolo_ChieseAperte.png"
@@ -112,7 +100,6 @@
       />
     </div>
 
-    <!-- SEZIONE 1: fascia bianca con icona + nome POI -->
     <section class="poi-header" aria-label="Intestazione POI">
       <div class="poi-header-right">
         <img id="poiIcona" alt="Icona POI" />
@@ -120,13 +107,10 @@
       </div>
     </section>
 
-
-    <!-- Qui metteremo Sezione 2 e 3 -->
     <main class="scheda-content">
       <!-- Vuoto per ora -->
     </main>
 
-    <!-- Footer identico a index -->
     <footer class="footer">
       <div class="footer-logos">
         <img src="immagini/Logo3.png" alt="Logo 3" class="footer-logo" />
@@ -161,10 +145,7 @@
           }
 
           poiNomeEl.textContent = poi.nome || '';
-
-          // Colore del nome preso dal JSON
           poiNomeEl.style.color = poi.colore || '#222';
-
 
           if (poi.iconapoi) {
             poiIconaEl.src = poi.iconapoi;
