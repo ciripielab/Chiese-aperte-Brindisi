@@ -8,6 +8,16 @@
   <link rel="stylesheet" href="style.css" />
 
   <style>
+
+    :root{
+      --poi-icon-h: 72px;     /* ⬅️ altezza icona (prima 128) */
+      --poi-name-size: 18px;  /* ⬅️ testo nome (prima 24) */
+      --poi-pad-v: 8px;       /* ⬅️ padding verticale fascia bianca */
+      --poi-pad-r: 12px;
+      --poi-pad-l: 16px;
+      --poi-top: 62px;        /* ⬅️ posizione fascia sotto al titolo */
+    }
+
     .scheda-title {
       position: absolute;
       top: 8px;
@@ -22,16 +32,16 @@
       pointer-events: auto;
     }
 
-    .poi-header {
+    .poi-header{
       position: absolute;
-      top: 70px;
+      top: var(--poi-top);
       left: 8px;
       right: 8px;
       z-index: 1100;
 
       background: #ffffff;
       border-radius: 10px;
-      padding: 10px 12px 10px 16px;
+      padding: var(--poi-pad-v) var(--poi-pad-r) var(--poi-pad-v) var(--poi-pad-l);
       box-shadow: 0 2px 8px rgba(0,0,0,0.18);
     }
 
@@ -43,23 +53,23 @@
       gap: 10px;
     }
 
-    .poi-header img {
-      height: 128px;
+    .poi-header img{
+      height: var(--poi-icon-h);
       width: auto;
       display: block;
     }
 
-    .poi-header .poi-name {
+    .poi-header .poi-name{
       font-weight: 700;
-      font-size: 24px;
-      line-height: 1.2;
+      font-size: var(--poi-name-size);
+      line-height: 1.15;
       text-align: left;
-      color: #222; /* verrà sovrascritto da JS con poi.colore */
+      color: #222; /* poi sovrascritto dal JS con poi.colore */
     }
 
-    .scheda-content {
+    .scheda-content{
       position: absolute;
-      top: 140px;
+      top: 130px;   /* ⬅️ prima 140, regola se serve */
       bottom: 80px;
       left: 8px;
       right: 8px;
@@ -74,17 +84,15 @@
     }
 
     /* In landscape riduciamo fascia + icona + testo */
-    @media (orientation: landscape) {
-      .poi-header{
-        padding: 8px 12px 8px 16px;
-      }
-      .poi-header img{
-        height: 96px;
-      }
-      .poi-header .poi-name{
-        font-size: 20px;
+    @media (orientation: landscape){
+      :root{
+        --poi-icon-h: 60px;
+        --poi-name-size: 16px;
+        --poi-pad-v: 6px;
+        --poi-top: 58px;
       }
     }
+
   </style>
 </head>
 
