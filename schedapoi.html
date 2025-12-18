@@ -79,6 +79,23 @@
       .poi-header .poi-name { font-size: 15px; }
       .scheda-content { top: 128px; }
     }
+
+    /* In landscape riduciamo fascia + icona + testo */
+    @media (orientation: landscape) {
+
+      .poi-header{
+        padding: 8px 12px 8px 16px; /* meno “altezza” del riquadro */
+      }
+
+      .poi-header img{
+        height: 96px;  /* prima 128px */
+      }
+
+      .poi-header .poi-name{
+        font-size: 20px; /* prima 24px */
+      }
+    }
+
   </style>
 </head>
 
