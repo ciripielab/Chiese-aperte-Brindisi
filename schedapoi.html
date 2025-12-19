@@ -32,17 +32,22 @@
       pointer-events: auto;
     }
 
+    .scheda-title img{
+      display: block;
+    }
+
+
     .poi-header{
       position: absolute;
-      top: var(--poi-top);
       left: 8px;
       right: 8px;
       z-index: 1100;
 
       background: #ffffff;
-      border-radius: 10px;
+
+      border-radius: 0;
       padding: var(--poi-pad-v) var(--poi-pad-r) var(--poi-pad-v) var(--poi-pad-l);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.10);
     }
 
     .poi-header-right {
@@ -172,6 +177,22 @@
           poiIconaEl.style.display = 'none';
         });
     }
+
+    function posizionaFasciaSottoTitolo() {
+      const titolo = document.getElementById('titolo-app');
+      const fascia = document.querySelector('.poi-header');
+      if (!titolo || !fascia) return;
+
+      const topTitolo = 8; // uguale al CSS (top: 8px)
+      const altezzaTitolo = titolo.getBoundingClientRect().height;
+
+      // "Incolla" la fascia al titolo (overlap di 1px per evitare righe)
+      fascia.style.top = (topTitolo + altezzaTitolo - 2) + 'px';
+    }
+
+    window.addEventListener('load', posizionaFasciaSottoTitolo);
+    window.addEventListener('resize', posizionaFasciaSottoTitolo);
+
   </script>
 </body>
 </html>
