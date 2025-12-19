@@ -8,16 +8,16 @@
   <link rel="stylesheet" href="style.css" />
 
   <style>
-
     :root{
-      --poi-icon-h: 58px;     /* ⬅️ altezza icona (prima 128) */
-      --poi-name-size: 20px;  /* ⬅️ testo nome (prima 24) */
-      --poi-pad-v: 6px;       /* ⬅️ padding verticale fascia bianca */
+      /* Dimensioni ottimizzate mobile */
+      --poi-icon-h: 58px;
+      --poi-name-size: 19px;
+      --poi-pad-v: 6px;
       --poi-pad-r: 10px;
       --poi-pad-l: 14px;
-      --poi-top: 60px;        /* ⬅️ posizione fascia sotto al titolo */
     }
 
+    /* Titolo in alto a destra */
     .scheda-title {
       position: absolute;
       top: 8px;
@@ -27,16 +27,12 @@
       justify-content: flex-end;
       pointer-events: none;
     }
-
     .scheda-title .header-title {
       pointer-events: auto;
+      display: block; /* evita spazi strani */
     }
 
-    .scheda-title img{
-      display: block;
-    }
-
-
+    /* Fascia bianca (Sezione 1) quasi blocco unico col titolo */
     .poi-header{
       position: absolute;
       left: 8px;
@@ -44,18 +40,18 @@
       z-index: 1100;
 
       background: #ffffff;
-
-      border-radius: 0;
+      border-radius: 0; /* niente arrotondamenti */
       padding: var(--poi-pad-v) var(--poi-pad-r) var(--poi-pad-v) var(--poi-pad-l);
+
+      /* ombra quasi impercettibile (metti none se la vuoi piatta) */
       box-shadow: 0 1px 3px rgba(0,0,0,0.10);
     }
 
     .poi-header-right {
-      margin-left: 0;
       display: flex;
-      align-items: flex-end;
-      justify-content: flex-start;
-      gap: 10px;
+      align-items: flex-end;       /* nome allineato al fondo icona */
+      justify-content: flex-start; /* contenuto a sinistra */
+      gap: 8px;
     }
 
     .poi-header img{
@@ -69,45 +65,97 @@
       font-size: var(--poi-name-size);
       line-height: 1.15;
       text-align: left;
-      color: #222; /* poi sovrascritto dal JS con poi.colore */
+      color: #222; /* sovrascritto da JS con poi.colore */
     }
 
+    /* CONTENUTO (Sezione 2 + 3) subito sotto fascia bianca
+       Il top viene impostato via JS per attaccarlo alla fascia. */
     .scheda-content{
       position: absolute;
-      top: 130px;   /* ⬅️ prima 140, regola se serve */
-      bottom: 80px;
       left: 8px;
       right: 8px;
-      overflow: hidden;
+      bottom: 80px;      /* sopra al footer */
+      z-index: 1000;
+
+      display: flex;
+      gap: 10px;
+
+      overflow: auto;    /* se descrizione lunga, scroll solo qui */
+      -webkit-overflow-scrolling: touch;
+      padding-top: 0;    /* attaccato alla fascia (gestito da JS) */
     }
 
-    @media (max-width: 480px) {
-      :root{
-        --poi-icon-h: 64px;
-        --poi-name-size: 16px;
-        --poi-pad-v: 7px;
-        --poi-top: 58px;
-      }
-      .scheda-content { top: 120px; }
+    /* Default: portrait = verticale */
+    .scheda-content{
+      flex-direction: column;
     }
 
+    /* Sezione 2: immagine */
+    .sezione-immagine{
+      background: rgba(255,255,255,0.0); /* trasparente, l’immagine “galleggia” */
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
 
-    /* In landscape riduciamo fascia + icona + testo */
+    .sezione-immagine img{
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+
+      /* limite intelligente per non “mangiare” tutto lo schermo */
+      max-height: 40vh;
+    }
+
+    /* Sezione 3: descrizione */
+    .sezione-descrizione{
+      background: #432813;
+      border-radius: 0;
+      padding: 12px 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .sezione-descrizione p{
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.45;
+      color: #ffffff;
+    }
+
+    /* Landscape: sezioni 2 e 3 affiancate */
     @media (orientation: landscape){
       :root{
         --poi-icon-h: 52px;
         --poi-name-size: 18px;
         --poi-pad-v: 5px;
-        --poi-top: 56px;
+      }
+
+      .scheda-content{
+        flex-direction: row;
+        align-items: flex-start;
+      }
+
+      .sezione-immagine,
+      .sezione-descrizione{
+        flex: 1 1 0;
+      }
+
+      .sezione-immagine img{
+        max-height: 65vh;
+      }
+
+      .sezione-descrizione p{
+        font-size: 15px;
       }
     }
-
   </style>
 </head>
 
 <body>
   <div class="page">
 
+    <!-- Titolo -->
     <div class="scheda-title">
       <img
         src="immagini/Titolo_ChieseAperte.png"
@@ -117,17 +165,28 @@
       />
     </div>
 
-    <section class="poi-header" aria-label="Intestazione POI">
+    <!-- Sezione 1: fascia bianca -->
+    <section class="poi-header" aria-label="Intestazione POI" id="poiHeader">
       <div class="poi-header-right">
         <img id="poiIcona" alt="Icona POI" />
         <div id="poiNome" class="poi-name">Caricamento...</div>
       </div>
     </section>
 
-    <main class="scheda-content">
-      <!-- Vuoto per ora -->
+    <!-- Sezione 2 + 3: subito sotto fascia -->
+    <main class="scheda-content" id="schedaContent">
+      <!-- Sezione 2: immagine -->
+      <section class="sezione-immagine" aria-label="Immagine del POI">
+        <img id="poiFoto" alt="Immagine POI" />
+      </section>
+
+      <!-- Sezione 3: descrizione -->
+      <section class="sezione-descrizione" aria-label="Descrizione del POI">
+        <p id="poiDescrizione"></p>
+      </section>
     </main>
 
+    <!-- Footer identico a index -->
     <footer class="footer">
       <div class="footer-logos">
         <img src="immagini/Logo3.png" alt="Logo 3" class="footer-logo" />
@@ -143,12 +202,40 @@
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
 
+    const titoloEl = document.getElementById('titolo-app');
+    const fasciaEl = document.getElementById('poiHeader');
+    const contentEl = document.getElementById('schedaContent');
+
     const poiIconaEl = document.getElementById('poiIcona');
     const poiNomeEl = document.getElementById('poiNome');
+    const poiFotoEl = document.getElementById('poiFoto');
+    const poiDescrizioneEl = document.getElementById('poiDescrizione');
+
+    function posizionaFasciaEContenuto() {
+      if (!titoloEl || !fasciaEl || !contentEl) return;
+
+      const topTitolo = 8; // uguale al CSS di .scheda-title
+      const hTitolo = titoloEl.getBoundingClientRect().height;
+
+      // fascia attaccata al titolo (micro-overlap per evitare righe)
+      const fasciaTop = topTitolo + hTitolo - 2;
+      fasciaEl.style.top = fasciaTop + 'px';
+
+      // contenuto attaccato alla fascia (nessuno spazio)
+      const hFascia = fasciaEl.getBoundingClientRect().height;
+      const contentTop = fasciaTop + hFascia - 1;
+      contentEl.style.top = contentTop + 'px';
+    }
+
+    // Aspetta che layout e immagini siano pronte
+    window.addEventListener('load', posizionaFasciaEContenuto);
+    window.addEventListener('resize', posizionaFasciaEContenuto);
 
     if (!id) {
       poiNomeEl.textContent = 'POI non specificato';
       poiIconaEl.style.display = 'none';
+      poiFotoEl.style.display = 'none';
+      poiDescrizioneEl.textContent = '';
     } else {
       fetch('pois.json?nocache=' + Date.now())
         .then(res => res.json())
@@ -158,9 +245,12 @@
           if (!poi) {
             poiNomeEl.textContent = 'POI non trovato';
             poiIconaEl.style.display = 'none';
+            poiFotoEl.style.display = 'none';
+            poiDescrizioneEl.textContent = '';
             return;
           }
 
+          // Sezione 1
           poiNomeEl.textContent = poi.nome || '';
           poiNomeEl.style.color = poi.colore || '#222';
 
@@ -170,29 +260,32 @@
           } else {
             poiIconaEl.style.display = 'none';
           }
+
+          // Sezione 2
+          if (poi.immagine) {
+            poiFotoEl.src = poi.immagine;
+            poiFotoEl.style.display = 'block';
+
+            // ricalcola posizioni quando l'immagine principale è caricata
+            poiFotoEl.onload = () => posizionaFasciaEContenuto();
+          } else {
+            poiFotoEl.style.display = 'none';
+          }
+
+          // Sezione 3
+          poiDescrizioneEl.textContent = poi.descrizione || '';
+
+          // ricalcola dopo aver scritto i testi (sicurezza)
+          requestAnimationFrame(posizionaFasciaEContenuto);
         })
         .catch(err => {
           console.error('Errore caricamento pois.json:', err);
           poiNomeEl.textContent = 'Errore nel caricamento';
           poiIconaEl.style.display = 'none';
+          poiFotoEl.style.display = 'none';
+          poiDescrizioneEl.textContent = '';
         });
     }
-
-    function posizionaFasciaSottoTitolo() {
-      const titolo = document.getElementById('titolo-app');
-      const fascia = document.querySelector('.poi-header');
-      if (!titolo || !fascia) return;
-
-      const topTitolo = 8; // uguale al CSS (top: 8px)
-      const altezzaTitolo = titolo.getBoundingClientRect().height;
-
-      // "Incolla" la fascia al titolo (overlap di 1px per evitare righe)
-      fascia.style.top = (topTitolo + altezzaTitolo - 2) + 'px';
-    }
-
-    window.addEventListener('load', posizionaFasciaSottoTitolo);
-    window.addEventListener('resize', posizionaFasciaSottoTitolo);
-
   </script>
 </body>
 </html>
