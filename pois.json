@@ -9,6 +9,7 @@
     "iconapoi": "Cattedrale/CattedraleIco.png",
     "immagine": "Cattedrale/FotoPrincipale.png",
     "imgpercorso": "Cattedrale/Percorso.png",
+    "testo": "Cattedrale/testo_it.txt",
     "colore": "#ec674d"
   },
   {
@@ -21,6 +22,7 @@
     "iconapoi": "SantaTeresa/SantaTeresaIco.png",
     "immagine": "SantaTeresa/FotoPrincipale.png",
     "imgpercorso": "SantaTeresa/Percorso.png",
+    "testo": "SantaTeresa/testo_it.txt",
     "colore": "#5bbca8"
   },
   {
@@ -33,6 +35,7 @@
     "iconapoi": "ScuolePie/ScuolePieIco.png",
     "immagine": "ScuolePie/FotoPrincipale.png",
     "imgpercorso": "ScuolePie/Percorso.png",
+    "testo": "ScuolePie/testo_it.txt",
     "colore": "#f8ab1f"
   },
   {
@@ -45,6 +48,7 @@
     "iconapoi": "SanPaolo/SanPaoloIco.png",
     "immagine": "SanPaolo/FotoPrincipale.png",
     "imgpercorso": "SanPaolo/Percorso.png",
+    "testo": "SanPaolo/testo_it.txt",
     "colore": "#7f4997"
   },
   {
@@ -57,6 +61,7 @@
     "iconapoi": "SanBenedetto/SanBenedettoIco.png",
     "immagine": "SanBenedetto/FotoPrincipale.png",
     "imgpercorso": "SanBenedetto/Percorso.png",
+    "testo": "SanBenedetto/testo_it.txt",
     "colore": "#99a9a7"
   },
   {
@@ -69,6 +74,7 @@
     "iconapoi": "ChiesadegliAngeli/AngeliIco.png",
     "immagine": "ChiesadegliAngeli/FotoPrincipale.png",
     "imgpercorso": "ChiesadegliAngeli/Percorso.png",
+    "testo": "ChiesadegliAngeli/testo_it.txt",
     "colore": "#ec674d"
   },
   {
@@ -81,6 +87,7 @@
     "iconapoi": "ChiesadelCristo/CristoIco.png",
     "immagine": "ChiesadelCristo/FotoPrincipale.png",
     "imgpercorso": "ChiesadelCristo/Percorso.png",
+    "testo": "ChiesadelCristo/testo_it.txt",
     "colore": "#5bbca8"
   },
   {
@@ -93,6 +100,7 @@
     "iconapoi": "ChiesadelleAnime/AnimeIco.png",
     "immagine": "ChiesadelleAnime/FotoPrincipale.png",
     "imgpercorso": "ChiesadelleAnime/Percorso.png",
+    "testo": "ChiesadelleAnime/testo_it.txt",
     "colore": "#f8ab1f"
   },
   {
@@ -105,6 +113,7 @@
     "iconapoi": "SantaLucia/SantaLuciaIco.png",
     "immagine": "SantaLucia/FotoPrincipale.png",
     "imgpercorso": "SantaLucia/Percorso.png",
+    "testo": "SantaLucia/testo_it.txt",
     "colore": "#7f4997"
   }
 ] 

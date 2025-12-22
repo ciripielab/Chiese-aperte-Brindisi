@@ -127,7 +127,7 @@
       min-height: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 14px 14px;
+      padding: 40px 36px;
     }
 
     .descrizione-box p{
@@ -135,6 +135,12 @@
       font-size: 15px;
       line-height: 1.45;
       color: #ffffff;
+    }
+
+    #poiDescrizione{
+      white-space: pre-wrap;
+      text-align: justify;     /* testo giustificato */
+      text-justify: inter-word;
     }
 
     /* Barra in basso (solo bottone percorso) */
@@ -264,7 +270,6 @@
 
   </div>
 
-
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -302,15 +307,43 @@
     window.addEventListener('resize', posizionaFasciaEContenuto);
 
     function resetUI(messaggio) {
-      if (poiNomeEl) poiNomeEl.textContent = messaggio || '';
+      if (poiNomeEl) {
+        poiNomeEl.textContent = messaggio || '';
+        poiNomeEl.style.color = '#222';
+      }
       if (poiIconaEl) poiIconaEl.style.display = 'none';
-
       if (poiFotoEl) poiFotoEl.style.display = 'none';
       if (poiDescrizioneEl) poiDescrizioneEl.textContent = '';
 
       if (bottomStrip) bottomStrip.style.display = 'none';
       if (btnPercorso) btnPercorso.style.display = 'none';
+    }
 
+    function caricaTestoDaFile(poi) {
+      // Se non c'è campo "testo", fallback su descrizione
+      if (!poiDescrizioneEl) return;
+
+      if (!poi.testo) {
+        poiDescrizioneEl.textContent = poi.descrizione || '';
+        return;
+      }
+
+      poiDescrizioneEl.textContent = 'Caricamento...';
+
+      fetch(poi.testo + '?nocache=' + Date.now())
+        .then(r => {
+          if (!r.ok) throw new Error('Impossibile caricare: ' + poi.testo);
+          return r.text();
+        })
+        .then(txt => {
+          poiDescrizioneEl.textContent = txt;
+          requestAnimationFrame(posizionaFasciaEContenuto);
+        })
+        .catch(err => {
+          console.error('Errore caricamento testo:', err);
+          // fallback: descrizione breve dal json
+          poiDescrizioneEl.textContent = poi.descrizione || 'Testo non disponibile.';
+        });
     }
 
     if (!id) {
@@ -352,52 +385,28 @@
             }
           }
 
-          // Sezione 3: descrizione
-          if (poiDescrizioneEl) {
-            poiDescrizioneEl.textContent = poi.descrizione || '';
-          }
+          // Sezione 3: testo da file esterno (fallback su descrizione)
+          caricaTestoDaFile(poi);
 
-          // Barra in basso (colore tema)
+          // Barra in basso: visibile + colore tema
           const tema = poi.colore || '#ec674d';
           if (bottomStrip) {
             bottomStrip.style.display = 'flex';
             bottomStrip.style.background = tema;
           }
 
-          // Percorso: immagine bottone + click -> Google Maps a piedi
+          // Bottone percorso (immagine) + click -> Google Maps a piedi
           if (btnPercorso && poiPercorsoImg && poi.imgpercorso) {
-            btnPercorso.style.display = 'block';
+            btnPercorso.style.display = 'flex';
             poiPercorsoImg.src = poi.imgpercorso;
-
-            // Colora la label se presente
-            const label = btnPercorso.querySelector('.percorso-label');
-            if (label) label.style.color = tema;
 
             btnPercorso.onclick = () => {
               const dest = `${poi.lat},${poi.lng}`;
               const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest)}&travelmode=walking`;
               window.open(url, '_blank');
             };
-          } else {
-            if (btnPercorso) btnPercorso.style.display = 'none';
-          }
-
-          // Galleria (opzionale): se nel JSON hai "galleria": ["...","..."]
-          if (poiGallery) {
-            poiGallery.innerHTML = '';
-            const arr = Array.isArray(poi.galleria) ? poi.galleria : [];
-
-            if (arr.length === 0) {
-              poiGallery.style.display = 'none';
-            } else {
-              poiGallery.style.display = 'flex';
-              arr.forEach(src => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = 'Foto';
-                poiGallery.appendChild(img);
-              });
-            }
+          } else if (btnPercorso) {
+            btnPercorso.style.display = 'none';
           }
 
           requestAnimationFrame(posizionaFasciaEContenuto);
@@ -408,10 +417,6 @@
         });
     }
   </script>
-
-
-
-
 
 </body>
 </html>
