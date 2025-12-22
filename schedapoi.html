@@ -9,16 +9,20 @@
 
   <style>
     :root{
-      /* Dimensioni ottimizzate mobile */
+      /* Header POI (fascia bianca) */
       --poi-icon-h: 58px;
       --poi-name-size: 19px;
       --poi-pad-v: 6px;
       --poi-pad-r: 10px;
       --poi-pad-l: 14px;
+
+      /* Barra in basso sezione testo */
+      --strip-h: 140px;
+      --strip-bg: #ec674d; /* fallback, puoi sovrascriverlo via JS con poi.colore */
     }
 
     /* Titolo in alto a destra */
-    .scheda-title {
+    .scheda-title{
       position: absolute;
       top: 8px;
       right: 8px;
@@ -27,12 +31,12 @@
       justify-content: flex-end;
       pointer-events: none;
     }
-    .scheda-title .header-title {
+    .scheda-title .header-title{
       pointer-events: auto;
-      display: block; /* evita spazi strani */
+      display: block;
     }
 
-    /* Fascia bianca (Sezione 1) quasi blocco unico col titolo */
+    /* Fascia bianca (Sezione 1) */
     .poi-header{
       position: absolute;
       left: 8px;
@@ -40,17 +44,15 @@
       z-index: 1100;
 
       background: #ffffff;
-      border-radius: 0; /* niente arrotondamenti */
+      border-radius: 0;
       padding: var(--poi-pad-v) var(--poi-pad-r) var(--poi-pad-v) var(--poi-pad-l);
-
-      /* ombra quasi impercettibile (metti none se la vuoi piatta) */
       box-shadow: 0 1px 3px rgba(0,0,0,0.10);
     }
 
-    .poi-header-right {
+    .poi-header-right{
       display: flex;
-      align-items: flex-end;       /* nome allineato al fondo icona */
-      justify-content: flex-start; /* contenuto a sinistra */
+      align-items: flex-end;
+      justify-content: flex-start;
       gap: 8px;
     }
 
@@ -65,91 +67,139 @@
       font-size: var(--poi-name-size);
       line-height: 1.15;
       text-align: left;
-      color: #222; /* sovrascritto da JS con poi.colore */
+      color: #222; /* sovrascritto via JS con poi.colore */
     }
 
-    /* CONTENUTO (Sezione 2 + 3) subito sotto fascia bianca
-       Il top viene impostato via JS per attaccarlo alla fascia. */
+    /* Contenuto (Sezione 2 + 3): top impostato via JS */
     .scheda-content{
       position: absolute;
       left: 8px;
       right: 8px;
-      bottom: 80px;      /* sopra al footer */
+      bottom: 80px; /* sopra footer */
       z-index: 1000;
 
       display: flex;
+      flex-direction: column; /* portrait default */
       gap: 10px;
 
-      overflow: auto;    /* se descrizione lunga, scroll solo qui */
+      overflow: hidden;
       -webkit-overflow-scrolling: touch;
-      padding-top: 0;    /* attaccato alla fascia (gestito da JS) */
     }
 
-    /* Default: portrait = verticale */
-    .scheda-content{
-      flex-direction: column;
+    /* Sezioni 2 e 3: stessa altezza disponibile */
+    .sezione-immagine,
+    .sezione-descrizione{
+      flex: 1 1 0;
+      min-height: 0;
     }
 
-    /* Sezione 2: immagine */
+    /* Sezione 2: foto grande */
     .sezione-immagine{
-      background: rgba(255,255,255,0.0); /* trasparente, l’immagine “galleggia” */
       display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
     }
 
     .sezione-immagine img{
       width: 100%;
-      height: auto;
+      height: 100%;
       display: block;
-      object-fit: contain;
-
-      /* limite intelligente per non “mangiare” tutto lo schermo */
-      max-height: 40vh;
+      object-fit: cover; /* cambia in contain se vuoi vederla tutta senza tagli */
+      max-height: none;
     }
 
-    /* Sezione 3: descrizione */
+    /* Sezione 3: testo + barra */
     .sezione-descrizione{
       background: #432813;
       border-radius: 0;
-      padding: 12px 12px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
     }
 
-    .sezione-descrizione p{
+    /* Testo scrollabile */
+    .descrizione-box{
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 14px 14px;
+    }
+
+    .descrizione-box p{
       margin: 0;
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.45;
       color: #ffffff;
     }
 
-    /* Landscape: sezioni 2 e 3 affiancate */
+    /* Barra in basso (solo bottone percorso) */
+    .bottom-strip{
+      flex: 0 0 var(--strip-h);
+      height: var(--strip-h);
+
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      padding: 10px;
+      background: var(--strip-bg);
+      box-sizing: border-box;
+    }
+
+    /* Bottone percorso: niente riquadri, immagine centrata */
+    .percorso-btn{
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      height: 100%;         /* prende altezza della barra */
+      max-height: 100%;
+    }
+
+    .percorso-btn img{
+      height: 100%;         /* l’immagine riempie in altezza */
+      width: auto;          /* mantiene proporzioni */
+      display: block;
+      object-fit: contain;
+
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    /* LANDSCAPE: foto a sinistra, testo a destra */
     @media (orientation: landscape){
       :root{
         --poi-icon-h: 52px;
         --poi-name-size: 18px;
         --poi-pad-v: 5px;
+        --strip-h: 140px;
       }
 
       .scheda-content{
         flex-direction: row;
-        align-items: flex-start;
+        align-items: stretch;
       }
+    }
 
-      .sezione-immagine,
-      .sezione-descrizione{
-        flex: 1 1 0;
-      }
-
-      .sezione-immagine img{
-        max-height: 65vh;
-      }
-
-      .sezione-descrizione p{
-        font-size: 15px;
+    /* Piccoli schermi: riduci un filo la barra */
+    @media (max-width: 420px){
+      :root{
+        --strip-h: 120px;
       }
     }
   </style>
+
+
 </head>
 
 <body>
@@ -175,15 +225,31 @@
 
     <!-- Sezione 2 + 3: subito sotto fascia -->
     <main class="scheda-content" id="schedaContent">
+
       <!-- Sezione 2: immagine -->
       <section class="sezione-immagine" aria-label="Immagine del POI">
         <img id="poiFoto" alt="Immagine POI" />
       </section>
 
-      <!-- Sezione 3: descrizione -->
-      <section class="sezione-descrizione" aria-label="Descrizione del POI">
-        <p id="poiDescrizione"></p>
+      <!-- Sezione 3: descrizione + barra in basso -->
+      <section class="sezione-descrizione" aria-label="Descrizione e Percorso del POI">
+        <!-- TESTO (scrollabile) -->
+        <div class="descrizione-box">
+          <p id="poiDescrizione"></p>
+        </div>
+
+        <!-- BARRA IN BASSO (percorso + galleria) -->
+        <div class="bottom-strip" id="bottomStrip">
+          <button id="btnPercorso" class="percorso-btn" type="button">
+            <img id="poiPercorsoImg" alt="Percorso" />
+          </button>
+
+          <div class="gallery" id="poiGallery" aria-label="Galleria immagini"></div>
+        </div>
       </section>
+
+
+
     </main>
 
     <!-- Footer identico a index -->
@@ -198,6 +264,7 @@
 
   </div>
 
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -211,6 +278,10 @@
     const poiFotoEl = document.getElementById('poiFoto');
     const poiDescrizioneEl = document.getElementById('poiDescrizione');
 
+    const bottomStrip = document.getElementById('bottomStrip');
+    const btnPercorso = document.getElementById('btnPercorso');
+    const poiPercorsoImg = document.getElementById('poiPercorsoImg');
+
     function posizionaFasciaEContenuto() {
       if (!titoloEl || !fasciaEl || !contentEl) return;
 
@@ -221,21 +292,29 @@
       const fasciaTop = topTitolo + hTitolo - 2;
       fasciaEl.style.top = fasciaTop + 'px';
 
-      // contenuto attaccato alla fascia (nessuno spazio)
+      // contenuto attaccato alla fascia
       const hFascia = fasciaEl.getBoundingClientRect().height;
       const contentTop = fasciaTop + hFascia - 1;
       contentEl.style.top = contentTop + 'px';
     }
 
-    // Aspetta che layout e immagini siano pronte
     window.addEventListener('load', posizionaFasciaEContenuto);
     window.addEventListener('resize', posizionaFasciaEContenuto);
 
+    function resetUI(messaggio) {
+      if (poiNomeEl) poiNomeEl.textContent = messaggio || '';
+      if (poiIconaEl) poiIconaEl.style.display = 'none';
+
+      if (poiFotoEl) poiFotoEl.style.display = 'none';
+      if (poiDescrizioneEl) poiDescrizioneEl.textContent = '';
+
+      if (bottomStrip) bottomStrip.style.display = 'none';
+      if (btnPercorso) btnPercorso.style.display = 'none';
+
+    }
+
     if (!id) {
-      poiNomeEl.textContent = 'POI non specificato';
-      poiIconaEl.style.display = 'none';
-      poiFotoEl.style.display = 'none';
-      poiDescrizioneEl.textContent = '';
+      resetUI('POI non specificato');
     } else {
       fetch('pois.json?nocache=' + Date.now())
         .then(res => res.json())
@@ -243,49 +322,96 @@
           const poi = punti.find(p => p.id === id);
 
           if (!poi) {
-            poiNomeEl.textContent = 'POI non trovato';
-            poiIconaEl.style.display = 'none';
-            poiFotoEl.style.display = 'none';
-            poiDescrizioneEl.textContent = '';
+            resetUI('POI non trovato');
             return;
           }
 
-          // Sezione 1
-          poiNomeEl.textContent = poi.nome || '';
-          poiNomeEl.style.color = poi.colore || '#222';
-
-          if (poi.iconapoi) {
-            poiIconaEl.src = poi.iconapoi;
-            poiIconaEl.style.display = 'block';
-          } else {
-            poiIconaEl.style.display = 'none';
+          // Sezione 1: nome + colore + icona
+          if (poiNomeEl) {
+            poiNomeEl.textContent = poi.nome || '';
+            poiNomeEl.style.color = poi.colore || '#222';
           }
 
-          // Sezione 2
-          if (poi.immagine) {
-            poiFotoEl.src = poi.immagine;
-            poiFotoEl.style.display = 'block';
-
-            // ricalcola posizioni quando l'immagine principale è caricata
-            poiFotoEl.onload = () => posizionaFasciaEContenuto();
-          } else {
-            poiFotoEl.style.display = 'none';
+          if (poiIconaEl) {
+            if (poi.iconapoi) {
+              poiIconaEl.src = poi.iconapoi;
+              poiIconaEl.style.display = 'block';
+            } else {
+              poiIconaEl.style.display = 'none';
+            }
           }
 
-          // Sezione 3
-          poiDescrizioneEl.textContent = poi.descrizione || '';
+          // Sezione 2: immagine principale
+          if (poiFotoEl) {
+            if (poi.immagine) {
+              poiFotoEl.src = poi.immagine;
+              poiFotoEl.style.display = 'block';
+              poiFotoEl.onload = () => posizionaFasciaEContenuto();
+            } else {
+              poiFotoEl.style.display = 'none';
+            }
+          }
 
-          // ricalcola dopo aver scritto i testi (sicurezza)
+          // Sezione 3: descrizione
+          if (poiDescrizioneEl) {
+            poiDescrizioneEl.textContent = poi.descrizione || '';
+          }
+
+          // Barra in basso (colore tema)
+          const tema = poi.colore || '#ec674d';
+          if (bottomStrip) {
+            bottomStrip.style.display = 'flex';
+            bottomStrip.style.background = tema;
+          }
+
+          // Percorso: immagine bottone + click -> Google Maps a piedi
+          if (btnPercorso && poiPercorsoImg && poi.imgpercorso) {
+            btnPercorso.style.display = 'block';
+            poiPercorsoImg.src = poi.imgpercorso;
+
+            // Colora la label se presente
+            const label = btnPercorso.querySelector('.percorso-label');
+            if (label) label.style.color = tema;
+
+            btnPercorso.onclick = () => {
+              const dest = `${poi.lat},${poi.lng}`;
+              const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest)}&travelmode=walking`;
+              window.open(url, '_blank');
+            };
+          } else {
+            if (btnPercorso) btnPercorso.style.display = 'none';
+          }
+
+          // Galleria (opzionale): se nel JSON hai "galleria": ["...","..."]
+          if (poiGallery) {
+            poiGallery.innerHTML = '';
+            const arr = Array.isArray(poi.galleria) ? poi.galleria : [];
+
+            if (arr.length === 0) {
+              poiGallery.style.display = 'none';
+            } else {
+              poiGallery.style.display = 'flex';
+              arr.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Foto';
+                poiGallery.appendChild(img);
+              });
+            }
+          }
+
           requestAnimationFrame(posizionaFasciaEContenuto);
         })
         .catch(err => {
           console.error('Errore caricamento pois.json:', err);
-          poiNomeEl.textContent = 'Errore nel caricamento';
-          poiIconaEl.style.display = 'none';
-          poiFotoEl.style.display = 'none';
-          poiDescrizioneEl.textContent = '';
+          resetUI('Errore nel caricamento');
         });
     }
   </script>
+
+
+
+
+
 </body>
 </html>
