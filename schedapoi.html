@@ -17,11 +17,20 @@
       --poi-pad-l: 14px;
 
       /* Barra in basso sezione testo */
-      --strip-h: 100px;
-      --strip-bg: #ec674d; /* fallback, puoi sovrascriverlo via JS con poi.colore */
+      --strip-h: 96px;
+      --strip-bg: #ec674d; /* fallback, sovrascritta via JS con poi.colore */
     }
 
-    /* Titolo in alto a destra */
+    /* ====== STRUTTURA PAGINA (NO OVERLAP CON FOOTER) ====== */
+    .page{
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column; /* header (overlay) + contenuto + footer in flusso */
+    }
+
+    /* Titolo in alto a destra (overlay) */
     .scheda-title{
       position: absolute;
       top: 8px;
@@ -36,7 +45,7 @@
       display: block;
     }
 
-    /* Fascia bianca (Sezione 1) */
+    /* Fascia bianca (Sezione 1) (overlay) */
     .poi-header{
       position: absolute;
       left: 8px;
@@ -67,23 +76,25 @@
       font-size: var(--poi-name-size);
       line-height: 1.15;
       text-align: left;
-      color: #222; /* sovrascritto via JS con poi.colore */
+      color: #222; /* sovrascritta via JS con poi.colore */
     }
 
-    /* Contenuto (Sezione 2 + 3): top impostato via JS */
+    /* ====== CONTENUTO (Sezione 2 + 3) IN FLUSSO ======
+      NB: il top viene ancora impostato via JS per “attaccarlo” alla fascia,
+      ma NON usiamo più bottom/absolute che causavano overlap con footer. */
     .scheda-content{
-      position: absolute;
-      left: 8px;
-      right: 8px;
-      bottom: calc(var(--footer-h) + env(safe-area-inset-bottom));
-      z-index: 1000;
+      position: relative;
+      flex: 1 1 auto;        /* prende lo spazio tra top e footer */
+      min-height: 0;         /* fondamentale per far funzionare gli overflow interni */
+      overflow: hidden;
+
+      margin-left: 8px;
+      margin-right: 8px;
 
       display: flex;
       flex-direction: column; /* portrait default */
       gap: 10px;
-
-      overflow: hidden;
-      -webkit-overflow-scrolling: touch;
+      z-index: 1000;
     }
 
     /* Sezioni 2 e 3: stessa altezza disponibile */
@@ -99,14 +110,14 @@
       align-items: center;
       justify-content: center;
       background: transparent;
+      overflow: hidden;
     }
 
     .sezione-immagine img{
       width: 100%;
       height: 100%;
       display: block;
-      object-fit: cover; /* cambia in contain se vuoi vederla tutta senza tagli */
-      max-height: none;
+      object-fit: cover; /* usa contain se vuoi vederla tutta senza tagli */
     }
 
     /* Sezione 3: testo + barra */
@@ -121,13 +132,15 @@
       overflow: hidden;
     }
 
-    /* Testo scrollabile */
+    /* Testo scrollabile (solo qui) */
     .descrizione-box{
       flex: 1 1 auto;
       min-height: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 24px 22px;
+
+      /* margini più ampi */
+      padding: 22px 22px;
     }
 
     .descrizione-box p{
@@ -139,7 +152,7 @@
 
     #poiDescrizione{
       white-space: pre-wrap;
-      text-align: justify;     /* testo giustificato */
+      text-align: justify;
       text-justify: inter-word;
     }
 
@@ -157,7 +170,7 @@
       box-sizing: border-box;
     }
 
-    /* Bottone percorso: niente riquadri, immagine centrata */
+    /* Bottone percorso: nessun riquadro bianco, immagine centrata */
     .percorso-btn{
       border: 0;
       background: transparent;
@@ -168,13 +181,13 @@
       align-items: center;
       justify-content: center;
 
-      height: 100%;         /* prende altezza della barra */
+      height: 100%;
       max-height: 100%;
     }
 
     .percorso-btn img{
-      height: 100%;         /* l’immagine riempie in altezza */
-      width: auto;          /* mantiene proporzioni */
+      height: 100%;
+      width: auto;
       display: block;
       object-fit: contain;
 
@@ -182,13 +195,29 @@
       user-select: none;
     }
 
-    /* LANDSCAPE: foto a sinistra, testo a destra */
+    /* ====== FOOTER: NELLA SCHEDA NON È FIXED (evita overlap) ====== */
+    .footer{
+      position: relative;  /* ✅ override di style.css */
+      left: auto;
+      right: auto;
+      bottom: auto;
+
+      height: var(--footer-h);
+      padding-bottom: env(safe-area-inset-bottom);
+      margin: 0 8px 0 8px;
+
+      display: flex;
+      align-items: flex-end;
+      z-index: 1;
+    }
+
+    /* ====== LANDSCAPE: foto a sinistra, testo a destra ====== */
     @media (orientation: landscape){
       :root{
         --poi-icon-h: 52px;
         --poi-name-size: 18px;
         --poi-pad-v: 5px;
-        --strip-h: 100px;
+        --strip-h: 90px;
       }
 
       .scheda-content{
@@ -197,13 +226,14 @@
       }
     }
 
-    /* Piccoli schermi: riduci un filo la barra */
+    /* Schermi piccoli: barra percorso un filo più bassa */
     @media (max-width: 420px){
       :root{
-        --strip-h: 88px;
+        --strip-h: 84px;
       }
     }
   </style>
+
 
 
 </head>
@@ -287,8 +317,6 @@
     const btnPercorso = document.getElementById('btnPercorso');
     const poiPercorsoImg = document.getElementById('poiPercorsoImg');
 
-    const footerEl = document.getElementById('appFooter');
-
 
     function posizionaFasciaEContenuto() {
       if (!titoloEl || !fasciaEl || !contentEl) return;
@@ -303,14 +331,10 @@
       // contenuto attaccato alla fascia
       const hFascia = fasciaEl.getBoundingClientRect().height;
       const contentTop = fasciaTop + hFascia - 1;
-      contentEl.style.top = contentTop + 'px';
 
-      // ✅ calcolo footer reale (evita sovrapposizioni)
-      const footerH = footerEl ? footerEl.getBoundingClientRect().height : 0;
-
-      // 2px di “respiro” per evitare contatto
-      contentEl.style.bottom = (footerH + 2) + 'px';
+      contentEl.style.marginTop = contentTop + 'px';
     }
+
 
 
     window.addEventListener('load', posizionaFasciaEContenuto);
