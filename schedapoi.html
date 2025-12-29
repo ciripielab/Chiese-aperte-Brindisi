@@ -17,7 +17,7 @@
       --poi-pad-l: 14px;
 
       /* Barra in basso sezione testo */
-      --strip-h: 140px;
+      --strip-h: 100px;
       --strip-bg: #ec674d; /* fallback, puoi sovrascriverlo via JS con poi.colore */
     }
 
@@ -75,7 +75,7 @@
       position: absolute;
       left: 8px;
       right: 8px;
-      bottom: 80px; /* sopra footer */
+      bottom: calc(var(--footer-h) + 16px + env(safe-area-inset-bottom));
       z-index: 1000;
 
       display: flex;
@@ -127,7 +127,7 @@
       min-height: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 40px 36px;
+      padding: 24px 22px;
     }
 
     .descrizione-box p{
@@ -188,7 +188,7 @@
         --poi-icon-h: 52px;
         --poi-name-size: 18px;
         --poi-pad-v: 5px;
-        --strip-h: 140px;
+        --strip-h: 100px;
       }
 
       .scheda-content{
@@ -200,7 +200,7 @@
     /* Piccoli schermi: riduci un filo la barra */
     @media (max-width: 420px){
       :root{
-        --strip-h: 120px;
+        --strip-h: 88px;
       }
     }
   </style>

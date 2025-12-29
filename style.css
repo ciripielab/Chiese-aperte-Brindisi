@@ -1,3 +1,8 @@
+:root{
+  --footer-h: 72px; /* altezza footer, regolabile */
+}
+
+
 /* RESET BASE */
 * {
   margin: 0;
@@ -12,12 +17,6 @@ html, body {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  /*
-  background-image: url("immagini/sfondo_pagina.png"); /*
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  */
   background-color: #f0dabb;
   color: #222;
   overflow: hidden;           /* pagina NON scorre */
@@ -58,15 +57,19 @@ body {
    ========================== */
 
 .footer {
-  position: absolute;
-  bottom: 8px;
+  position: fixed;
   left: 8px;
   right: 8px;
-  z-index: 1000;
+  bottom: 8px;
 
+  height: var(--footer-h);
+  padding-bottom: env(safe-area-inset-bottom);
+
+  z-index: 2000;
   display: flex;
   align-items: center;
 }
+
 
 /* Gruppo loghi a sinistra */
 .footer-logos {
@@ -100,7 +103,7 @@ body {
   position: absolute;
   /* riempi lo schermo ma lascia spazio per header e footer */
   top: 70px;     /* spazio sotto il titolo */
-  bottom: 70px;  /* spazio sopra i loghi */
+  bottom: calc(var(--footer-h) + 16px + env(safe-area-inset-bottom)); /* spazio sopra i loghi */
   left: 8px;
   right: 8px;
 
