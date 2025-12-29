@@ -1,5 +1,5 @@
 :root{
-  --footer-h: 72px; /* altezza footer, regolabile */
+  --footer-h: 52px; /* altezza footer, regolabile */
 }
 
 
@@ -60,14 +60,16 @@ body {
   position: fixed;
   left: 8px;
   right: 8px;
-  bottom: 8px;
+  bottom: 0;
 
   height: var(--footer-h);
+
+  /* iPhone: lascia SOLO lo spazio necessario alla home bar */
   padding-bottom: env(safe-area-inset-bottom);
 
   z-index: 2000;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 }
 
 
@@ -80,7 +82,7 @@ body {
 
 /* Loghi (sinistra) */
 .footer-logo {
-  height: 40px;
+  height: 34px;
   width: auto;
 }
 
@@ -88,7 +90,7 @@ body {
 .footer-banner {
   margin-left: auto;   /* spinge l'immagine a destra */
   margin-right: 8px;   /* piccolo distacco dal bordo destro */
-  height: 48px;        /* stessa altezza dei loghi */
+  height: 40px;        /* stessa altezza dei loghi */
   width: auto;         /* mantiene proporzioni */
 }
 
@@ -103,7 +105,7 @@ body {
   position: absolute;
   /* riempi lo schermo ma lascia spazio per header e footer */
   top: 70px;     /* spazio sotto il titolo */
-  bottom: calc(var(--footer-h) + 16px + env(safe-area-inset-bottom)); /* spazio sopra i loghi */
+  bottom: calc(var(--footer-h) + env(safe-area-inset-bottom)); /* spazio sopra i loghi */
   left: 8px;
   right: 8px;
 
@@ -170,12 +172,12 @@ body {
   }
 
   .footer-logo {
-    height: 32px;
+    height: 30px;
   }
 
 
   .footer-banner {
-    height: 36px;
+    height: 34px;
   }
 
   .main-layout {
@@ -213,11 +215,11 @@ body {
   }
 
   .footer-logo {
-    height: 36px;
+    height: 32px;
   }
 
   .footer-banner {
-    height: 42px;
+    height: 38px;
   }
 
   .main-layout {
