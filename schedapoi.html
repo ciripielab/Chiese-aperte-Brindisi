@@ -416,6 +416,9 @@
             btnPercorso.style.display = 'flex';
             poiPercorsoImg.src = poi.imgpercorso;
 
+            poiPercorsoImg.onload = () => posizionaFasciaEContenuto();
+            setTimeout(posizionaFasciaEContenuto, 80);
+
             btnPercorso.onclick = () => {
               const dest = `${poi.lat},${poi.lng}`;
               const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest)}&travelmode=walking`;
