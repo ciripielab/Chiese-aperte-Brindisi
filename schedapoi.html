@@ -202,13 +202,14 @@
       left: 8px;
       right: 8px;
       bottom: 0;
-      z-index: 2000;
+      z-index: 3000;
 
       height: var(--footer-h);
       padding-bottom: env(safe-area-inset-bottom);
 
       display: flex;
       align-items: flex-end;
+      overflow: hidden; /* evita sbordi */
     }
 
     /* ====== LANDSCAPE: foto a sinistra, testo a destra ====== */
@@ -325,23 +326,12 @@
       const topTitolo = 8;
       const hTitolo = titoloEl.getBoundingClientRect().height;
 
-      // fascia attaccata al titolo
       const fasciaTop = topTitolo + hTitolo - 2;
       fasciaEl.style.top = fasciaTop + 'px';
 
-      // contenuto attaccato alla fascia
       const hFascia = fasciaEl.getBoundingClientRect().height;
       const contentTop = fasciaTop + hFascia - 1;
       contentEl.style.top = contentTop + 'px';
-
-      // ✅ spazio reale occupato dal footer (dal suo top fino al fondo viewport)
-      const footer = document.getElementById('appFooter');
-      if (footer) {
-        const r = footer.getBoundingClientRect();
-        const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-        const occupato = Math.max(0, vh - r.top);
-        contentEl.style.bottom = (occupato + 2) + 'px';
-      }
     }
 
 
