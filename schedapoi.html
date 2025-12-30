@@ -80,22 +80,22 @@
       color: #222; /* sovrascritta via JS con poi.colore */
     }
 
-    /* ====== CONTENUTO (Sezione 2 + 3) IN FLUSSO ======
-      NB: il top viene ancora impostato via JS per “attaccarlo” alla fascia,
-      ma NON usiamo più bottom/absolute che causavano overlap con footer. */
+    /* Il contenuto NON deve mai andare sotto al footer */
     .scheda-content{
-      position: relative;
-      flex: 1 1 auto;        /* prende lo spazio tra top e footer */
-      min-height: 0;         /* fondamentale per far funzionare gli overflow interni */
-      overflow: hidden;
-
-      margin-left: 8px;
-      margin-right: 8px;
-
-      display: flex;
-      flex-direction: column; /* portrait default */
-      gap: 10px;
+      position: absolute;
+      left: 8px;
+      right: 8px;
       z-index: 1000;
+
+      /* lo “stop” sotto è il footer */
+      bottom: calc(var(--footer-h) + env(safe-area-inset-bottom));
+      
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      overflow: hidden;
+      min-height: 0;
     }
 
     /* Sezioni 2 e 3: stessa altezza disponibile */
@@ -196,20 +196,19 @@
       user-select: none;
     }
 
-    /* ====== FOOTER: NELLA SCHEDA NON È FIXED (evita overlap) ====== */
+    /* Footer SEMPRE visibile anche nella scheda */
     .footer{
-      position: relative;  /* ✅ override di style.css */
-      left: auto;
-      right: auto;
-      bottom: auto;
+      position: fixed;
+      left: 8px;
+      right: 8px;
+      bottom: 0;
+      z-index: 2000;
 
       height: var(--footer-h);
       padding-bottom: env(safe-area-inset-bottom);
-      margin: 0 8px 0 8px;
 
       display: flex;
       align-items: flex-end;
-      z-index: 1;
     }
 
     /* ====== LANDSCAPE: foto a sinistra, testo a destra ====== */
@@ -321,23 +320,28 @@
     const pageEl = document.querySelector('.page');
 
     function posizionaFasciaEContenuto() {
-      if (!titoloEl || !fasciaEl || !contentEl || !pageEl) return;
+      if (!titoloEl || !fasciaEl || !contentEl) return;
 
       const topTitolo = 8;
       const hTitolo = titoloEl.getBoundingClientRect().height;
 
+      // fascia attaccata al titolo
       const fasciaTop = topTitolo + hTitolo - 2;
       fasciaEl.style.top = fasciaTop + 'px';
 
+      // contenuto attaccato alla fascia
       const hFascia = fasciaEl.getBoundingClientRect().height;
       const contentTop = fasciaTop + hFascia - 1;
+      contentEl.style.top = contentTop + 'px';
 
-      // ✅ invece di marginTop/top sul contenuto: padding-top sul contenitore pagina
-      pageEl.style.paddingTop = contentTop + 'px';
-
-      // assicuriamoci di non avere vecchi offset rimasti
-      contentEl.style.marginTop = '0px';
-      contentEl.style.top = 'auto';
+      // ✅ spazio reale occupato dal footer (dal suo top fino al fondo viewport)
+      const footer = document.getElementById('appFooter');
+      if (footer) {
+        const r = footer.getBoundingClientRect();
+        const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        const occupato = Math.max(0, vh - r.top);
+        contentEl.style.bottom = (occupato + 2) + 'px';
+      }
     }
 
 
