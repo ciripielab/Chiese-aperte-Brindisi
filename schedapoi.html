@@ -226,15 +226,27 @@
     /* Landscape: immagine a sinistra, testo a destra */
     @media (orientation: landscape){
       :root{
-        --title-h: 42px;
-        --poi-icon-h: 52px;
-        --poi-name-size: 18px;
-        --strip-h: 80px;
+        --poi-icon-h: 36px;
+        --poi-name-size: 16px;
+        --strip-h: 48px;
+        --footer-h: 52px;
+        --gap: 6px;
+      }
+
+      .poi-bar{
+        padding: 5px 10px;
+        gap: 8px;
+      }
+
+      #poiTesto{
+        font-size: 14px;
+        line-height: 1.5;
       }
 
       .content-inner{
         flex-direction: row;
         align-items: stretch;
+        gap: 8px;
       }
 
       .hero, .text{
@@ -244,10 +256,19 @@
 
       .hero img{
         height: 100%;
-        max-height: 60vh;
+        max-height: 56vh;
         object-fit: cover;
       }
+
+      .footer-logo{
+        height: 26px;
+      }
+
+      .footer-banner{
+        height: 30px;
+      }
     }
+
 
     /* Schermi piccoli: riduci un filo */
     @media (max-width: 420px){
