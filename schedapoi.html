@@ -5,335 +5,287 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Chiese Aperte – Scheda POI</title>
 
+  <!-- Puoi tenerlo: qui sotto sovrascriviamo solo ciò che serve alla scheda -->
+  <link rel="stylesheet" href="style.css" />
+
   <style>
+  /* =========================
+    VARIABILI
+    ========================= */
+  :root{
+    --header-pad: 8px;
+
+    --title-h: 52px;
+    --poi-bar-h: 74px;
+
+    --footer-h: 52px;
+
+    --strip-bg: #ec674d; /* colore barra Percorso (override via JS) */
+    --content-max-w: 720px; /* larghezza max contenuto (centro) */
+  }
+
+  /* =========================
+    BASE
+    ========================= */
+  html, body{ height: 100%; }
+
+  body{
+    margin: 0;
+    overflow: hidden; /* scroll SOLO nel main */
+    background: #f0dabb;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    color: #222;
+  }
+
+  /* =========================
+    HEADER FISSO
+    ========================= */
+  .scheda-header{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 3000;
+    padding: var(--header-pad);
+    pointer-events: none;
+  }
+
+  .header-title-wrap{
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .header-title{
+    max-height: var(--title-h);
+    width: auto;
+    display: block;
+    pointer-events: auto;
+  }
+
+  /* Fascia POI */
+  .poi-bar{
+    margin-top: 6px;
+    background: #fff;
+    padding: 8px 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+    pointer-events: auto;
+  }
+
+  .poi-icon{
+    height: 58px;
+    width: auto;
+    display: block;
+  }
+
+  .poi-name{
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  /* =========================
+    FOOTER FISSO
+    ========================= */
+  .footer{
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    bottom: 0;
+    height: var(--footer-h);
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 3000;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .footer-logos{
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+  }
+
+  .footer-logo{
+    height: 30px;
+    width: auto;
+  }
+
+  .footer-banner{
+    margin-left: auto;
+    height: 36px;
+    width: auto;
+  }
+
+  /* =========================
+    MAIN SCORREVOLE (centro)
+    ========================= */
+  .scheda-main{
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    top: calc(var(--header-pad) + var(--title-h) + var(--poi-bar-h) + 6px);
+    bottom: calc(var(--footer-h) + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Contenuto centrato e allineato */
+  .content-grid{
+    max-width: var(--content-max-w);
+    margin: 0 auto;             /* ✅ centra orizzontalmente */
+    display: flex;
+    flex-direction: column;      /* ✅ SEMPRE colonna */
+    gap: 10px;
+    padding: 8px 0 12px;
+  }
+
+  /* =========================
+    IMMAGINE (proporzioni corrette)
+    ========================= */
+  .media{
+    display: flex;
+    justify-content: center;  /* centra l’immagine */
+    align-items: center;
+  }
+
+  .media img{
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;      /* ✅ niente tagli */
+    max-height: 42vh;         /* evita che “mangi” tutto in landscape */
+  }
+
+  /* =========================
+    TESTO
+    ========================= */
+  .text{
+    background: #432813;
+    color: #fff;
+    padding: 18px 20px;
+  }
+
+  .poi-text{
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* =========================
+    BARRA AZIONI (Percorso)
+    ========================= */
+  .bottom-strip{
+    background: var(--strip-bg);
+    padding: 10px 12px;
+    padding-left: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* pulsante a sinistra */
+    gap: 12px;               /* pronta per altri tasti */
+  }
+
+  .percorso-btn{
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .percorso-btn img{
+    height: 56px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+
+  /* =========================
+    LANDSCAPE: stessa colonna, piccoli aggiustamenti
+    ========================= */
+  @media (orientation: landscape){
     :root{
-      --bg: #f0dabb;
-
-      /* Footer (sempre visibile) */
-      --footer-h: 56px;
-
-      /* Header */
-      --gap: 8px;
-      --title-h: 44px; /* altezza massima del titolo */
-      --poi-icon-h: 56px;
-      --poi-name-size: 19px;
-
-      /* Sezione testo */
-      --text-bg: #432813;
-      --text-color: #ffffff;
-
-      /* Barra percorso sticky (dentro contenuto) */
-      --strip-h: 64px;
-      --strip-bg: #ec674d; /* fallback, sovrascritta via JS con poi.colore */
+      --title-h: 46px;
+      --poi-bar-h: 62px;
     }
 
-    /* Reset */
-    *{ box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body{ height: 100%; }
-
-    body{
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      overflow: hidden; /* pagina non scorre: scorre solo la sezione centrale */
+    .media img{
+      max-height: 55vh; /* in landscape puoi farla un po’ più alta */
     }
 
-    /* Layout a griglia: Header | Contenuto scroll | Footer */
-    .page{
-      height: 100vh;
-      width: 100%;
-      display: grid;
-      grid-template-rows: auto 1fr var(--footer-h);
-      gap: 0;
-      padding: var(--gap);
-      padding-bottom: calc(var(--gap) + env(safe-area-inset-bottom));
+    .poi-text{
+      font-size: 14.5px;
     }
-
-    /* HEADER (fisso nella griglia, non scorre) */
-    header{
-      display: flex;
-      flex-direction: column;
-      gap: var(--gap);
-    }
-
-    .title-row{
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-
-    .header-title{
-      max-height: var(--title-h);
-      height: auto;
-      width: auto;
-      display: block;
-    }
-
-    /* Fascia POI bianca */
-    .poi-bar{
-      background: #fff;
-      border-radius: 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.10);
-      padding: 8px 12px;
-      display: flex;
-      align-items: flex-end; /* nome allineato alla base icona */
-      gap: 10px;
-    }
-
-    .poi-bar img{
-      height: var(--poi-icon-h);
-      width: auto;
-      display: block;
-    }
-
-    .poi-name{
-      font-size: var(--poi-name-size);
-      font-weight: 800;
-      line-height: 1.1;
-      color: #222; /* sovrascritta da JS con poi.colore */
-    }
-
-    /* CONTENUTO (SCORREVOLE) */
-    main.content{
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      min-height: 0; /* importantissimo in grid */
-      position: relative;
-
-      /* spazio interno, così non “incolli” al bordo */
-      padding: 0;
-    }
-
-    /* Layout interno: portrait colonna, landscape riga */
-    .content-inner{
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding-bottom: 10px; /* piccolo respiro prima della sticky bar */
-    }
-
-    /* Sezione immagine */
-    .hero{
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .hero img{
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-      border-radius: 0;
-    }
-
-    /* Sezione testo */
-    .text{
-      background: var(--text-bg);
-      color: var(--text-color);
-      padding: 18px 22px;
-      border-radius: 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-
-    #poiTesto{
-      white-space: pre-wrap;   /* mantiene a-capo dal .txt */
-      text-align: justify;
-      text-justify: inter-word;
-      line-height: 1.55;
-      font-size: 15px;
-    }
-
-    /* Barra Percorso sticky: resta visibile in basso nel contenuto */
-    .bottom-strip{
-      position: sticky;
-      bottom: 0;
-      z-index: 5;
-
-      height: var(--strip-h);
-      background: var(--strip-bg);
-      padding: 10px;
-
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-
-      /* elimina “linee” quando si incolla al fondo */
-      box-shadow: 0 -1px 3px rgba(0,0,0,0.12);
-    }
-
-    /* Bottone percorso: solo immagine, niente riquadri */
-    .percorso-btn{
-      border: 0;
-      background: transparent;
-      padding: 0;
-      cursor: pointer;
-
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .percorso-btn img{
-      height: 100%;
-      width: auto;
-      object-fit: contain;
-
-      -webkit-user-drag: none;
-      user-select: none;
-    }
-
-    /* FOOTER (fisso nella griglia, non scorre) */
-    footer.footer{
-      height: var(--footer-h);
-      display: flex;
-      align-items: flex-end;
-      gap: 16px;
-      overflow: hidden;
-    }
-
-    .footer-logos{
-      display: flex;
-      align-items: flex-end;
-      gap: 12px;
-    }
-
-    .footer-logo{
-      height: 28px;
-      width: auto;
-      display: block;
-    }
-
-    .footer-banner{
-      margin-left: auto;
-      height: 32px;
-      width: auto;
-      display: block;
-    }
-
-    /* Portrait tuning */
-    @media (orientation: portrait){
-      :root{
-        --title-h: 40px;
-        --poi-icon-h: 54px;
-        --poi-name-size: 19px;
-        --strip-h: 86px;
-      }
-      .footer-logo{ height: 30px; }
-      .footer-banner{ height: 34px; }
-    }
-
-    /* Landscape: immagine a sinistra, testo a destra */
-    @media (orientation: landscape){
-      :root{
-        --poi-icon-h: 36px;
-        --poi-name-size: 16px;
-        --strip-h: 48px;
-        --footer-h: 52px;
-        --gap: 6px;
-      }
-
-      .poi-bar{
-        padding: 5px 10px;
-        gap: 8px;
-      }
-
-      #poiTesto{
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      .content-inner{
-        flex-direction: row;
-        align-items: stretch;
-        gap: 8px;
-      }
-
-      .hero, .text{
-        flex: 1 1 0;
-        min-width: 0;
-      }
-
-      .hero img{
-        height: 100%;
-        max-height: 56vh;
-        object-fit: cover;
-      }
-
-      .footer-logo{
-        height: 26px;
-      }
-
-      .footer-banner{
-        height: 30px;
-      }
-    }
-
-
-    /* Schermi piccoli: riduci un filo */
-    @media (max-width: 420px){
-      :root{
-        --strip-h: 78px;
-      }
-      .text{ padding: 16px 18px; }
-      #poiTesto{ font-size: 14.5px; }
-    }
+  }
   </style>
+
+
+
 </head>
 
 <body>
-  <div class="page">
+  <!-- HEADER fisso -->
+  <header class="scheda-header" aria-label="Header scheda">
+    <div class="header-title-wrap">
+      <img
+        src="immagini/Titolo_ChieseAperte.png"
+        class="header-title"
+        alt="Chiese Aperte"
+        id="titolo-app"
+      />
+    </div>
 
-    <!-- HEADER -->
-    <header>
-      <div class="title-row">
-        <img
-          src="immagini/Titolo_ChieseAperte.png"
-          alt="Chiese Aperte"
-          class="header-title"
-          id="titolo-app"
-        />
+    <section class="poi-bar" aria-label="POI selezionato">
+      <img id="poiIcona" class="poi-icon" alt="Icona POI" />
+      <div id="poiNome" class="poi-name">Caricamento...</div>
+    </section>
+  </header>
+
+  <!-- MAIN scorrevole (unico scroll) -->
+  <main class="scheda-main" aria-label="Contenuto scheda">
+    <section class="content-grid" aria-label="Immagine e testo">
+      <!-- Immagine -->
+      <div class="media" aria-label="Immagine principale">
+        <img id="poiFoto" alt="Immagine POI" />
       </div>
 
-      <div class="poi-bar" aria-label="Intestazione POI">
-        <img id="poiIcona" alt="Icona POI" style="display:none" />
-        <div id="poiNome" class="poi-name">Caricamento...</div>
-      </div>
-    </header>
+      <section class="content-grid">
 
-    <!-- CONTENUTO SCORREVOLE -->
-    <main class="content" id="content">
-      <div class="content-inner">
+        <div class="media">
+          <img id="poiFoto" />
+        </div>
 
-        <section class="hero" aria-label="Immagine del POI">
-          <img id="poiFoto" alt="Immagine POI" style="display:none" />
-        </section>
+        <div class="text">
+          <p id="poiDescrizione" class="poi-text"></p>
+        </div>
 
-        <section class="text" aria-label="Testo del POI">
-          <div id="poiTesto">Caricamento...</div>
-        </section>
+        <!-- ✅ Barra azioni FUORI dal testo -->
+        <div class="bottom-strip" id="bottomStrip">
+          <button id="btnPercorso" class="percorso-btn" type="button">
+            <img id="poiPercorsoImg" alt="Percorso" />
+          </button>
+        </div>
 
-      </div>
+      </section>
 
-      <!-- Barra sticky: Percorso -->
-      <div class="bottom-strip" id="bottomStrip" aria-label="Percorso">
-        <button id="btnPercorso" class="percorso-btn" type="button" aria-label="Vai al percorso" style="display:none">
-          <img id="poiPercorsoImg" alt="Percorso" />
-        </button>
-      </div>
-    </main>
+    </section>
+  </main>
 
-    <!-- FOOTER -->
-    <footer class="footer" id="appFooter" aria-label="Footer">
-      <div class="footer-logos">
-        <img src="immagini/Logo3.png" alt="Logo 3" class="footer-logo" />
-        <img src="immagini/Logo2.png" alt="Logo 2" class="footer-logo" />
-        <img src="immagini/Logo1.png" alt="Logo 1" class="footer-logo" />
-      </div>
-      <img src="immagini/Footer.png" alt="Footer decorativo" class="footer-banner" />
-    </footer>
-
-  </div>
+  <!-- FOOTER fisso -->
+  <footer class="footer" id="appFooter" aria-label="Footer">
+    <div class="footer-logos">
+      <img src="immagini/Logo3.png" alt="Logo 3" class="footer-logo" />
+      <img src="immagini/Logo2.png" alt="Logo 2" class="footer-logo" />
+      <img src="immagini/Logo1.png" alt="Logo 1" class="footer-logo" />
+    </div>
+    <img src="immagini/Footer.png" alt="Footer decorativo" class="footer-banner" />
+  </footer>
 
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -342,82 +294,97 @@
     const poiIconaEl = document.getElementById('poiIcona');
     const poiNomeEl = document.getElementById('poiNome');
     const poiFotoEl = document.getElementById('poiFoto');
-    const poiTestoEl = document.getElementById('poiTesto');
+    const poiDescrizioneEl = document.getElementById('poiDescrizione');
 
     const bottomStrip = document.getElementById('bottomStrip');
     const btnPercorso = document.getElementById('btnPercorso');
     const poiPercorsoImg = document.getElementById('poiPercorsoImg');
 
     function resetUI(msg){
-      poiNomeEl.textContent = msg || '';
-      poiNomeEl.style.color = '#222';
-      poiIconaEl.style.display = 'none';
-      poiFotoEl.style.display = 'none';
-      poiTestoEl.textContent = '';
-      btnPercorso.style.display = 'none';
-      bottomStrip.style.background = getComputedStyle(document.documentElement).getPropertyValue('--strip-bg') || '#ec674d';
+      if (poiNomeEl) {
+        poiNomeEl.textContent = msg || '';
+        poiNomeEl.style.color = '#222';
+      }
+      if (poiIconaEl) poiIconaEl.style.display = 'none';
+      if (poiFotoEl) poiFotoEl.style.display = 'none';
+      if (poiDescrizioneEl) poiDescrizioneEl.textContent = '';
+
+      if (bottomStrip) bottomStrip.style.display = 'none';
+      if (btnPercorso) btnPercorso.style.display = 'none';
     }
 
     function caricaTestoDaFile(poi){
-      if (!poi.testo){
-        poiTestoEl.textContent = poi.descrizione || '';
+      if (!poiDescrizioneEl) return;
+
+      if (!poi.testo) {
+        poiDescrizioneEl.textContent = poi.descrizione || '';
         return;
       }
-      poiTestoEl.textContent = 'Caricamento...';
+
+      poiDescrizioneEl.textContent = 'Caricamento...';
+
       fetch(poi.testo + '?nocache=' + Date.now())
         .then(r => {
-          if(!r.ok) throw new Error('Impossibile caricare ' + poi.testo);
+          if (!r.ok) throw new Error('Impossibile caricare: ' + poi.testo);
           return r.text();
         })
         .then(txt => {
-          poiTestoEl.textContent = txt;
+          poiDescrizioneEl.textContent = txt;
         })
         .catch(err => {
-          console.error(err);
-          poiTestoEl.textContent = poi.descrizione || 'Testo non disponibile.';
+          console.error('Errore caricamento testo:', err);
+          poiDescrizioneEl.textContent = poi.descrizione || 'Testo non disponibile.';
         });
     }
 
-    if (!id){
+    if (!id) {
       resetUI('POI non specificato');
     } else {
       fetch('pois.json?nocache=' + Date.now())
-        .then(r => r.json())
+        .then(res => res.json())
         .then(punti => {
           const poi = punti.find(p => p.id === id);
-          if (!poi){
+          if (!poi) {
             resetUI('POI non trovato');
             return;
           }
 
-          // Header POI
-          poiNomeEl.textContent = poi.nome || '';
-          poiNomeEl.style.color = poi.colore || '#222';
-
-          if (poi.iconapoi){
-            poiIconaEl.src = poi.iconapoi;
-            poiIconaEl.style.display = 'block';
+          // Nome + colore
+          if (poiNomeEl) {
+            poiNomeEl.textContent = poi.nome || '';
+            poiNomeEl.style.color = poi.colore || '#222';
           }
 
-          // Immagine
-          if (poi.immagine){
+          // Icona POI
+          if (poiIconaEl && poi.iconapoi) {
+            poiIconaEl.src = poi.iconapoi;
+            poiIconaEl.style.display = 'block';
+          } else if (poiIconaEl) {
+            poiIconaEl.style.display = 'none';
+          }
+
+          // Immagine principale
+          if (poiFotoEl && poi.immagine) {
             poiFotoEl.src = poi.immagine;
             poiFotoEl.style.display = 'block';
-          } else {
+          } else if (poiFotoEl) {
             poiFotoEl.style.display = 'none';
           }
 
-          // Testo
+          // Testo lungo (da file esterno)
           caricaTestoDaFile(poi);
 
-          // Barra percorso: colore tema
+          // Barra percorso colorata (dentro contenuto scorrevole)
           const tema = poi.colore || '#ec674d';
-          bottomStrip.style.background = tema;
+          if (bottomStrip) {
+            bottomStrip.style.background = tema;
+          }
 
-          // Bottone percorso + Google Maps (a piedi)
-          if (poi.imgpercorso && poiPercorsoImg){
+          // Bottone percorso (immagine) + Google Maps a piedi
+          if (btnPercorso && poiPercorsoImg && poi.imgpercorso && poi.lat && poi.lng) {
             poiPercorsoImg.src = poi.imgpercorso;
             btnPercorso.style.display = 'flex';
+            if (bottomStrip) bottomStrip.style.display = 'flex';
 
             btnPercorso.onclick = () => {
               const dest = `${poi.lat},${poi.lng}`;
@@ -425,7 +392,8 @@
               window.open(url, '_blank');
             };
           } else {
-            btnPercorso.style.display = 'none';
+            if (bottomStrip) bottomStrip.style.display = 'none';
+            if (btnPercorso) btnPercorso.style.display = 'none';
           }
         })
         .catch(err => {
