@@ -126,6 +126,7 @@
     top: calc(var(--header-pad) + var(--title-h) + var(--poi-bar-h) + 6px);
     bottom: calc(var(--footer-h) + env(safe-area-inset-bottom));
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -137,6 +138,7 @@
     flex-direction: column;      /* ✅ SEMPRE colonna */
       gap: 2px;
     padding: 8px 0 12px;
+    width: 100%;
   }
 
   /* =========================
@@ -217,8 +219,41 @@
     padding: 6px 0;
     flex: 1 1 auto;
     scroll-behavior: smooth;
+    min-width: 0;
+    max-width: 100%;
   }
 
+  .preview-strip-wrap{
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .preview-strip-wrap::before,
+  .preview-strip-wrap::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 18px;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .preview-strip-wrap::before{
+    left: 0;
+    background: linear-gradient(to right, var(--strip-bg) 0%, transparent 100%);
+  }
+
+  .preview-strip-wrap::after{
+    right: 0;
+    background: linear-gradient(to left, var(--strip-bg) 0%, transparent 100%);
+  }
+
+  .preview-strip-wrap.has-overflow::before,
+  .preview-strip-wrap.has-overflow::after{
+    opacity: 1;
+  }
   .preview-strip::-webkit-scrollbar{
     height: 6px;
   }
@@ -347,7 +382,9 @@
           <button id="btnPercorso" class="percorso-btn" type="button">
             <img id="poiPercorsoImg" alt="Percorso" />
           </button>
-          <div class="preview-strip" id="previewStrip" aria-label="Anteprime"></div>
+          <div class="preview-strip-wrap" id="previewStripWrap" aria-hidden="true">
+            <div class="preview-strip" id="previewStrip" aria-label="Anteprime"></div>
+          </div>
         </div>
 
       </section>
@@ -383,9 +420,16 @@
     const btnPercorso = document.getElementById('btnPercorso');
     const poiPercorsoImg = document.getElementById('poiPercorsoImg');
     const previewStrip = document.getElementById('previewStrip');
+    const previewStripWrap = document.getElementById('previewStripWrap');
     const imageOverlay = document.getElementById('imageOverlay');
     const overlayImage = document.getElementById('overlayImage');
     const overlayClose = document.getElementById('overlayClose');
+
+    function updatePreviewOverflow(){
+      if (!previewStrip || !previewStripWrap) return;
+      const hasOverflow = previewStrip.scrollWidth > previewStrip.clientWidth + 1;
+      previewStripWrap.classList.toggle('has-overflow', hasOverflow);
+    }
 
     function resetUI(msg){
       if (poiNomeEl) {
@@ -497,6 +541,7 @@
                 const img = document.createElement('img');
                 img.alt = `Anteprima ${i}`;
                 img.src = `${poi.percorsofoto}Anteprima${i}.png`;
+                img.addEventListener('load', updatePreviewOverflow);
 
                 btn.appendChild(img);
                 btn.addEventListener('click', () => {
@@ -508,6 +553,7 @@
                 previewStrip.appendChild(btn);
               }
               previewStrip.style.display = 'flex';
+              requestAnimationFrame(updatePreviewOverflow);
             } else {
               previewStrip.style.display = 'none';
             }
@@ -562,6 +608,8 @@
         }
       }, { passive: true });
     }
+
+    window.addEventListener('resize', updatePreviewOverflow);
   </script>
 </body>
 </html>
