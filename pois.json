@@ -10,7 +10,9 @@
     "immagine": "Cattedrale/FotoPrincipale.png",
     "imgpercorso": "Cattedrale/Percorso.png",
     "testo": "Cattedrale/testo_it.txt",
-    "colore": "#ec674d"
+    "colore": "#ec674d",
+    "numerofoto": "3",
+    "percorsofoto": "Cattedrale/Fotogallery/"
   },
   {
     "id": "chiesa-santa-teresa",
@@ -23,7 +25,9 @@
     "immagine": "SantaTeresa/FotoPrincipale.png",
     "imgpercorso": "SantaTeresa/Percorso.png",
     "testo": "SantaTeresa/testo_it.txt",
-    "colore": "#5bbca8"
+    "colore": "#5bbca8",
+    "numerofoto": "6",
+    "percorsofoto": "SantaTeresa/Fotogallery/"
   },
   {
     "id": "sanmichele-arcangelo",
@@ -36,7 +40,9 @@
     "immagine": "ScuolePie/FotoPrincipale.png",
     "imgpercorso": "ScuolePie/Percorso.png",
     "testo": "ScuolePie/testo_it.txt",
-    "colore": "#f8ab1f"
+    "colore": "#f8ab1f",
+    "numerofoto": "3",
+    "percorsofoto": "ScuolePie/Fotogallery/"
   },
   {
     "id": "chiesa-san-paolo",
@@ -49,7 +55,9 @@
     "immagine": "SanPaolo/FotoPrincipale.png",
     "imgpercorso": "SanPaolo/Percorso.png",
     "testo": "SanPaolo/testo_it.txt",
-    "colore": "#7f4997"
+    "colore": "#7f4997",
+    "numerofoto": "5",
+    "percorsofoto": "SanPaolo/Fotogallery/"
   },
   {
     "id": "chiesa-san-benedetto",
@@ -62,7 +70,9 @@
     "immagine": "SanBenedetto/FotoPrincipale.png",
     "imgpercorso": "SanBenedetto/Percorso.png",
     "testo": "SanBenedetto/testo_it.txt",
-    "colore": "#99a9a7"
+    "colore": "#99a9a7",
+    "numerofoto": "3",
+    "percorsofoto": "SanBenedetto/Fotogallery/"
   },
   {
     "id": "chiesa-santamaria-angeli",
@@ -75,7 +85,9 @@
     "immagine": "ChiesadegliAngeli/FotoPrincipale.png",
     "imgpercorso": "ChiesadegliAngeli/Percorso.png",
     "testo": "ChiesadegliAngeli/testo_it.txt",
-    "colore": "#ec674d"
+    "colore": "#ec674d",
+    "numerofoto": "3",
+    "percorsofoto": "ChiesadegliAngeli/Fotogallery/"
   },
   {
     "id": "chiesa-del-cristo",
@@ -88,7 +100,9 @@
     "immagine": "ChiesadelCristo/FotoPrincipale.png",
     "imgpercorso": "ChiesadelCristo/Percorso.png",
     "testo": "ChiesadelCristo/testo_it.txt",
-    "colore": "#5bbca8"
+    "colore": "#5bbca8",
+    "numerofoto": "3",
+    "percorsofoto": "ChiesadelCristo/Fotogallery/"
   },
   {
     "id": "chiesa-san-sebastiano",
@@ -101,7 +115,9 @@
     "immagine": "ChiesadelleAnime/FotoPrincipale.png",
     "imgpercorso": "ChiesadelleAnime/Percorso.png",
     "testo": "ChiesadelleAnime/testo_it.txt",
-    "colore": "#f8ab1f"
+    "colore": "#f8ab1f",
+    "numerofoto": "2",
+    "percorsofoto": "ChiesadelleAnime/Fotogallery/"
   },
   {
     "id": "chiesa-santa-lucia",
@@ -114,6 +130,8 @@
     "immagine": "SantaLucia/FotoPrincipale.png",
     "imgpercorso": "SantaLucia/Percorso.png",
     "testo": "SantaLucia/testo_it.txt",
-    "colore": "#7f4997"
+    "colore": "#7f4997",
+    "numerofoto": "3",
+    "percorsofoto": "SantaLucia/Fotogallery/"
   }
 ] 
