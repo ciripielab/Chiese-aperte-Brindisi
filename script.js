@@ -24,7 +24,7 @@ fetch('pois.json?nocache=' + Date.now())  // evita cache vecchia del JSON
 
       // -------------------------------------------
       // ICONA PERSONALIZZATA (mantiene proporzioni)
-      // I file originali sono 142x227, li riduciamo
+      // I file originali sono 142x227
       // -------------------------------------------
       const originalWidth = 142;
       const originalHeight = 227;
