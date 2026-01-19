@@ -10,6 +10,7 @@
     "immagine": "Cattedrale/FotoPrincipale.png",
     "imgpercorso": "Cattedrale/Percorso.png",
     "testo": "Cattedrale/testo_it.txt",
+    "testo_en": "Cattedrale/testo_en.txt",
     "colore": "#ec674d",
     "numerofoto": "3",
     "percorsofoto": "Cattedrale/Fotogallery/"
@@ -25,6 +26,7 @@
     "immagine": "SantaTeresa/FotoPrincipale.png",
     "imgpercorso": "SantaTeresa/Percorso.png",
     "testo": "SantaTeresa/testo_it.txt",
+    "testo_en": "SantaTeresa/testo_en.txt",
     "colore": "#5bbca8",
     "numerofoto": "6",
     "percorsofoto": "SantaTeresa/Fotogallery/"
@@ -40,6 +42,7 @@
     "immagine": "ScuolePie/FotoPrincipale.png",
     "imgpercorso": "ScuolePie/Percorso.png",
     "testo": "ScuolePie/testo_it.txt",
+    "testo_en": "ScuolePie/testo_en.txt",
     "colore": "#f8ab1f",
     "numerofoto": "3",
     "percorsofoto": "ScuolePie/Fotogallery/"
@@ -55,6 +58,7 @@
     "immagine": "SanPaolo/FotoPrincipale.png",
     "imgpercorso": "SanPaolo/Percorso.png",
     "testo": "SanPaolo/testo_it.txt",
+    "testo_en": "SanPaolo/testo_en.txt",
     "colore": "#7f4997",
     "numerofoto": "5",
     "percorsofoto": "SanPaolo/Fotogallery/"
@@ -70,6 +74,7 @@
     "immagine": "SanBenedetto/FotoPrincipale.png",
     "imgpercorso": "SanBenedetto/Percorso.png",
     "testo": "SanBenedetto/testo_it.txt",
+    "testo_en": "SanBenedetto/testo_en.txt",
     "colore": "#99a9a7",
     "numerofoto": "3",
     "percorsofoto": "SanBenedetto/Fotogallery/"
@@ -85,6 +90,7 @@
     "immagine": "ChiesadegliAngeli/FotoPrincipale.png",
     "imgpercorso": "ChiesadegliAngeli/Percorso.png",
     "testo": "ChiesadegliAngeli/testo_it.txt",
+    "testo_en": "ChiesadegliAngeli/testo_en.txt",
     "colore": "#ec674d",
     "numerofoto": "3",
     "percorsofoto": "ChiesadegliAngeli/Fotogallery/"
@@ -100,6 +106,7 @@
     "immagine": "ChiesadelCristo/FotoPrincipale.png",
     "imgpercorso": "ChiesadelCristo/Percorso.png",
     "testo": "ChiesadelCristo/testo_it.txt",
+    "testo_en": "ChiesadelCristo/testo_en.txt",
     "colore": "#5bbca8",
     "numerofoto": "3",
     "percorsofoto": "ChiesadelCristo/Fotogallery/"
@@ -115,6 +122,7 @@
     "immagine": "ChiesadelleAnime/FotoPrincipale.png",
     "imgpercorso": "ChiesadelleAnime/Percorso.png",
     "testo": "ChiesadelleAnime/testo_it.txt",
+    "testo_en": "ChiesadelleAnime/testo_en.txt",
     "colore": "#f8ab1f",
     "numerofoto": "2",
     "percorsofoto": "ChiesadelleAnime/Fotogallery/"
@@ -130,6 +138,7 @@
     "immagine": "SantaLucia/FotoPrincipale.png",
     "imgpercorso": "SantaLucia/Percorso.png",
     "testo": "SantaLucia/testo_it.txt",
+    "testo_en": "SantaLucia/testo_en.txt",
     "colore": "#7f4997",
     "numerofoto": "3",
     "percorsofoto": "SantaLucia/Fotogallery/"

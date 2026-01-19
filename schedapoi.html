@@ -50,7 +50,41 @@
 
   .header-title-wrap{
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .header-actions{
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: auto;
+  }
+
+  .home-btn{
+    border: 1px solid #222;
+    background: #fff;
+    color: #222;
+    padding: 4px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 26px;
+    pointer-events: auto;
+  }
+
+  .home-btn svg{
+    width: 18px;
+    height: 18px;
+    display: block;
+    stroke: currentColor;
   }
 
   .header-title{
@@ -82,6 +116,30 @@
     font-size: 19px;
     font-weight: 700;
     line-height: 1.1;
+  }
+
+  .lang-toggle{
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .lang-btn{
+    border: 1px solid #222;
+    background: transparent;
+    color: #222;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .lang-btn.is-active{
+    background: #222;
+    color: #fff;
   }
 
   /* =========================
@@ -348,6 +406,13 @@
   <!-- HEADER fisso -->
   <header class="scheda-header" aria-label="Header scheda">
     <div class="header-title-wrap">
+      <button class="home-btn" type="button" id="btnHome" aria-label="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5"></path>
+          <path d="M5 10v11h14V10"></path>
+          <path d="M9 21v-6h6v6"></path>
+        </svg>
+      </button>
       <img
         src="immagini/Titolo_ChieseAperte.png"
         class="header-title"
@@ -359,6 +424,10 @@
     <section class="poi-bar" aria-label="POI selezionato">
       <img id="poiIcona" class="poi-icon" alt="Icona POI" />
       <div id="poiNome" class="poi-name">Caricamento...</div>
+      <div class="lang-toggle" role="group" aria-label="Lingua">
+        <button class="lang-btn is-active" type="button" data-lang="it" aria-pressed="true">IT</button>
+        <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
     </section>
   </header>
 
@@ -427,6 +496,11 @@
     const imageOverlay = document.getElementById('imageOverlay');
     const overlayImage = document.getElementById('overlayImage');
     const overlayClose = document.getElementById('overlayClose');
+    const langButtons = document.querySelectorAll('.lang-btn');
+    const langToggle = document.querySelector('.lang-toggle');
+    const btnHome = document.getElementById('btnHome');
+    let currentPoi = null;
+    let currentLang = 'it';
 
     function updatePreviewOverflow(){
       if (!previewStrip || !previewStripWrap) return;
@@ -447,21 +521,29 @@
       if (btnPercorso) btnPercorso.style.display = 'none';
       if (previewStrip) previewStrip.style.display = 'none';
       if (imageOverlay) imageOverlay.classList.remove('is-visible');
+      if (langToggle) langToggle.style.display = 'none';
     }
 
-    function caricaTestoDaFile(poi){
+    function resolveTestoPath(poi, lang){
+      if (!poi) return '';
+      if (lang === 'en' && poi.testo_en) return poi.testo_en;
+      return poi.testo || '';
+    }
+
+    function caricaTestoDaFile(poi, lang){
       if (!poiDescrizioneEl) return;
 
-      if (!poi.testo) {
+      const testoPath = resolveTestoPath(poi, lang);
+      if (!testoPath) {
         poiDescrizioneEl.textContent = poi.descrizione || '';
         return;
       }
 
       poiDescrizioneEl.textContent = 'Caricamento...';
 
-      fetch(poi.testo + '?nocache=' + Date.now())
+      fetch(testoPath + '?nocache=' + Date.now())
         .then(r => {
-          if (!r.ok) throw new Error('Impossibile caricare: ' + poi.testo);
+          if (!r.ok) throw new Error('Impossibile caricare: ' + testoPath);
           return r.text();
         })
         .then(txt => {
@@ -471,6 +553,52 @@
           console.error('Errore caricamento testo:', err);
           poiDescrizioneEl.textContent = poi.descrizione || 'Testo non disponibile.';
         });
+    }
+
+    function setLanguage(lang, poi){
+      currentLang = (lang === 'en') ? 'en' : 'it';
+      document.documentElement.setAttribute('lang', currentLang);
+      if (langButtons && langButtons.length > 0) {
+        langButtons.forEach(btn => {
+          const isActive = btn.dataset.lang === currentLang;
+          btn.classList.toggle('is-active', isActive);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+      try {
+        localStorage.setItem('poiLang', currentLang);
+      } catch (err) {
+        console.warn('Impossibile salvare lingua:', err);
+      }
+      if (poi) caricaTestoDaFile(poi, currentLang);
+    }
+
+    function getInitialLang(){
+      const fromQuery = params.get('lang');
+      const fromStorage = (() => {
+        try {
+          return localStorage.getItem('poiLang');
+        } catch (err) {
+          return null;
+        }
+      })();
+      const candidate = (fromQuery || fromStorage || 'it').toLowerCase();
+      return candidate === 'en' ? 'en' : 'it';
+    }
+
+    if (langButtons && langButtons.length > 0) {
+      langButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!currentPoi) return;
+          setLanguage(btn.dataset.lang, currentPoi);
+        });
+      });
+    }
+
+    if (btnHome) {
+      btnHome.addEventListener('click', () => {
+        window.location.href = 'index.html';
+      });
     }
 
     if (!id) {
@@ -484,6 +612,8 @@
             resetUI('POI non trovato');
             return;
           }
+          currentPoi = poi;
+          if (langToggle) langToggle.style.display = 'flex';
 
           // Nome + colore
           if (poiNomeEl) {
@@ -508,7 +638,7 @@
           }
 
           // Testo lungo (da file esterno)
-          caricaTestoDaFile(poi);
+          setLanguage(getInitialLang(), poi);
 
           // Barra percorso colorata (dentro contenuto scorrevole)
           const tema = poi.colore || '#ec674d';
