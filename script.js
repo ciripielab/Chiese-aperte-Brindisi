@@ -60,7 +60,7 @@ fetch('pois.json?nocache=' + Date.now())  // evita cache vecchia del JSON
           padding: 10px;
           border-radius: 10px;
           background-color: ${bgColor};
-          color: #222;
+          color: #fff;
         ">
           <strong style="font-size: 16px;">${punto.nome}</strong><br>
           <p style="margin: 6px 0; font-size: 14px;">
