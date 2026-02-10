@@ -282,12 +282,24 @@
     max-width: 100%;
   }
 
-  .preview-strip-wrap{
-    position: relative;
-    flex: 1 1 0%;
-    min-width: 0;
-    display: flex;
-  }
+	  .preview-strip-wrap{
+	    position: relative;
+	    flex: 1 1 0%;
+	    min-width: 0;
+	    display: flex;
+	    flex-direction: column;
+	    align-items: flex-start;
+	  }
+
+	  .photo-credit{
+	    font-size: 12px;
+	    line-height: 1.2;
+	    color: rgba(255, 255, 255, 0.9);
+	    padding: 0 2px 0 12px; /* +10px a destra rispetto a prima */
+	    margin-top: 2px;
+	    display: none;
+	    max-width: 100%;
+	  }
 
   .preview-strip-wrap::before,
   .preview-strip-wrap::after{
@@ -452,14 +464,15 @@
         </div>
 
         <!-- ✅ Barra azioni FUORI dal testo -->
-        <div class="bottom-strip" id="bottomStrip">
-          <button id="btnPercorso" class="percorso-btn" type="button">
-            <img id="poiPercorsoImg" alt="Percorso" />
-          </button>
-          <div class="preview-strip-wrap" id="previewStripWrap" aria-hidden="true">
-            <div class="preview-strip" id="previewStrip" aria-label="Anteprime"></div>
-          </div>
-        </div>
+	        <div class="bottom-strip" id="bottomStrip">
+	          <button id="btnPercorso" class="percorso-btn" type="button">
+	            <img id="poiPercorsoImg" alt="Percorso" />
+	          </button>
+	          <div class="preview-strip-wrap" id="previewStripWrap" aria-hidden="true">
+	            <div class="preview-strip" id="previewStrip" aria-label="Anteprime"></div>
+	            <div class="photo-credit" id="photoCredit">Foto di Brundarte di Francesco Guadalupi</div>
+	          </div>
+	        </div>
 
       </section>
 
@@ -492,12 +505,13 @@
 
     const bottomStrip = document.getElementById('bottomStrip');
     const btnPercorso = document.getElementById('btnPercorso');
-    const poiPercorsoImg = document.getElementById('poiPercorsoImg');
-    const previewStrip = document.getElementById('previewStrip');
-    const previewStripWrap = document.getElementById('previewStripWrap');
-    const imageOverlay = document.getElementById('imageOverlay');
-    const overlayImage = document.getElementById('overlayImage');
-    const overlayClose = document.getElementById('overlayClose');
+	    const poiPercorsoImg = document.getElementById('poiPercorsoImg');
+	    const previewStrip = document.getElementById('previewStrip');
+	    const previewStripWrap = document.getElementById('previewStripWrap');
+	    const photoCredit = document.getElementById('photoCredit');
+	    const imageOverlay = document.getElementById('imageOverlay');
+	    const overlayImage = document.getElementById('overlayImage');
+	    const overlayClose = document.getElementById('overlayClose');
     const langButtons = document.querySelectorAll('.lang-btn');
     const langToggle = document.querySelector('.lang-toggle');
     const btnHome = document.getElementById('btnHome');
@@ -519,12 +533,13 @@
       if (poiFotoEl) poiFotoEl.style.display = 'none';
       if (poiDescrizioneEl) poiDescrizioneEl.textContent = '';
 
-      if (bottomStrip) bottomStrip.style.display = 'none';
-      if (btnPercorso) btnPercorso.style.display = 'none';
-      if (previewStrip) previewStrip.style.display = 'none';
-      if (imageOverlay) imageOverlay.classList.remove('is-visible');
-      if (langToggle) langToggle.style.display = 'none';
-    }
+	      if (bottomStrip) bottomStrip.style.display = 'none';
+	      if (btnPercorso) btnPercorso.style.display = 'none';
+	      if (previewStrip) previewStrip.style.display = 'none';
+	      if (photoCredit) photoCredit.style.display = 'none';
+	      if (imageOverlay) imageOverlay.classList.remove('is-visible');
+	      if (langToggle) langToggle.style.display = 'none';
+	    }
 
     function resolveTestoPath(poi, lang){
       if (!poi) return '';
@@ -664,11 +679,11 @@
             if (btnPercorso) btnPercorso.style.display = 'none';
           }
 
-          if (previewStrip) {
-            previewStrip.innerHTML = '';
-            const totalFoto = parseInt(poi.numerofoto, 10);
-            if (poi.percorsofoto && Number.isFinite(totalFoto) && totalFoto > 0) {
-              for (let i = 1; i <= totalFoto; i += 1) {
+	          if (previewStrip) {
+	            previewStrip.innerHTML = '';
+	            const totalFoto = parseInt(poi.numerofoto, 10);
+	            if (poi.percorsofoto && Number.isFinite(totalFoto) && totalFoto > 0) {
+	              for (let i = 1; i <= totalFoto; i += 1) {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'preview-btn';
@@ -686,14 +701,16 @@
                   imageOverlay.setAttribute('aria-hidden', 'false');
                 });
                 previewStrip.appendChild(btn);
-              }
-              previewStrip.style.display = 'flex';
-              requestAnimationFrame(updatePreviewOverflow);
-            } else {
-              previewStrip.style.display = 'none';
-            }
-          }
-        })
+	              }
+	              previewStrip.style.display = 'flex';
+	              if (photoCredit) photoCredit.style.display = 'block';
+	              requestAnimationFrame(updatePreviewOverflow);
+	            } else {
+	              previewStrip.style.display = 'none';
+	              if (photoCredit) photoCredit.style.display = 'none';
+	            }
+	          }
+	        })
         .catch(err => {
           console.error('Errore caricamento pois.json:', err);
           resetUI('Errore nel caricamento');
