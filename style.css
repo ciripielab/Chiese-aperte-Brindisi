@@ -66,6 +66,7 @@ body {
 
   /* iPhone: lascia SOLO lo spazio necessario alla home bar */
   padding-bottom: env(safe-area-inset-bottom);
+  background-color: #f0dabb;
 
   z-index: 2000;
   display: flex;
