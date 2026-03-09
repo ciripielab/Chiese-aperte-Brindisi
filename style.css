@@ -69,7 +69,9 @@ body {
 
   z-index: 2000;
   display: flex;
+  justify-content: center;
   align-items: flex-end;
+  gap: 14px;
 }
 
 
@@ -87,16 +89,20 @@ body {
   width: auto;
 }
 
+.footer-logo-first-two {
+  height: 46px;
+}
+
 .footer-logo-deleo {
   margin-right: 10px;
 }
 
-/* Footer.png allineata a destra */
+/* Banner footer allineato al gruppo centrale */
 .footer-banner {
-  margin-left: auto;   /* spinge l'immagine a destra */
-  margin-right: 8px;   /* piccolo distacco dal bordo destro */
+  margin-left: 0;
+  margin-right: 0;
   margin-bottom: 4px;  /* piccolo spazio dal bordo inferiore */
-  height: 42px;        /* stessa altezza dei loghi */
+  height: 44px;        /* leggermente piu grande dei loghi standard */
   width: auto;         /* mantiene proporzioni */
 }
 
@@ -110,7 +116,7 @@ body {
 .main-layout {
   position: absolute;
   /* riempi lo schermo ma lascia spazio per header e footer */
-  top: 70px;     /* spazio sotto il titolo */
+  top: 50px;     /* spazio sotto il titolo (ridotto) */
   bottom: calc(var(--footer-h) + env(safe-area-inset-bottom)); /* spazio sopra i loghi */
   left: 8px;
   right: 8px;
@@ -181,9 +187,13 @@ body {
     height: 38px;
   }
 
+  .footer-logo-first-two {
+    height: 42px;
+  }
+
 
   .footer-banner {
-    height: 36px;
+    height: 38px;
   }
 
   .main-layout {
@@ -224,8 +234,12 @@ body {
     height: 40px;
   }
 
+  .footer-logo-first-two {
+    height: 44px;
+  }
+
   .footer-banner {
-    height: 40px;
+    height: 42px;
   }
 
   .main-layout {

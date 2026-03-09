@@ -153,7 +153,9 @@
     padding-bottom: env(safe-area-inset-bottom);
     z-index: 3000;
     display: flex;
+    justify-content: center;
     align-items: flex-end;
+    gap: 12px;
   }
 
   .footer-logos{
@@ -168,14 +170,18 @@
     width: auto;
   }
 
+  .footer-logo-first-two{
+    height: 42px;
+  }
+
   .footer-logo-deleo{
     margin-right: 10px;
   }
 
   .footer-banner{
-    margin-left: auto;
+    margin-left: 0;
     margin-bottom: 4px;
-    height: 38px;
+    height: 40px;
     width: auto;
   }
 
@@ -493,12 +499,12 @@
   <!-- FOOTER fisso -->
   <footer class="footer" id="appFooter" aria-label="Footer">
     <div class="footer-logos">
-      <img src="immagini/Logo3.png" alt="Logo 3" class="footer-logo" />
-      <img src="immagini/logoDeLeo.png" alt="Logo De Leo" class="footer-logo footer-logo-deleo" />
+      <img src="immagini/Logo3.png" alt="Logo 3" class="footer-logo footer-logo-first-two" />
+      <img src="immagini/logoDeLeo.png" alt="Logo De Leo" class="footer-logo footer-logo-deleo footer-logo-first-two" />
       <img src="immagini/Logo1.png" alt="Logo 1" class="footer-logo" />
-      <img src="immagini/Logo2.png" alt="Logo 2" class="footer-logo" />
+      <img src="immagini/LogoMuseoDiocesano.png" alt="Logo Museo Diocesano" class="footer-banner" />
     </div>
-    <img src="immagini/LogoMuseoDiocesano.png" alt="Logo Museo Diocesano" class="footer-banner" />
+    <img src="immagini/Logo2.png" alt="Logo 2" class="footer-logo" />
   </footer>
 
   <script>
