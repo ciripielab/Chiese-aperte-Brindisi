@@ -14,6 +14,8 @@
     ========================= */
   :root{
     --header-pad: 8px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
 
     --title-h: 52px;
     --poi-bar-h: 74px;
@@ -27,7 +29,16 @@
   /* =========================
     BASE
     ========================= */
-  html, body{ height: 100%; }
+  html, body{
+    height: 100%;
+    min-height: 100vh;
+  }
+
+  @supports (height: 100dvh){
+    html, body{
+      min-height: 100dvh;
+    }
+  }
 
   body{
     margin: 0;
@@ -45,6 +56,7 @@
     top: 0; left: 0; right: 0;
     z-index: 3000;
     padding: var(--header-pad);
+    padding-top: calc(var(--safe-top) + var(--header-pad));
     pointer-events: none;
   }
 
@@ -150,7 +162,7 @@
     right: 8px;
     bottom: 0;
     height: var(--footer-h);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: var(--safe-bottom);
     background: #f0dabb;
     z-index: 3000;
     display: flex;
@@ -193,8 +205,8 @@
     position: fixed;
     left: 8px;
     right: 8px;
-    top: calc(var(--header-pad) + var(--title-h) + var(--poi-bar-h) + 6px);
-    bottom: calc(var(--footer-h) + env(safe-area-inset-bottom));
+    top: calc(var(--safe-top) + var(--header-pad) + var(--title-h) + var(--poi-bar-h) + 6px);
+    bottom: calc(var(--footer-h) + var(--safe-bottom));
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
@@ -425,6 +437,35 @@
   @media (max-width: 480px){
     :root{
       --title-h: 40px;
+      --footer-h: 40px;
+    }
+
+    .footer{
+      left: 4px;
+      right: 4px;
+      gap: 6px;
+    }
+
+    .footer-logos{
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+
+    .footer-logo{
+      height: 28px;
+    }
+
+    .footer-logo-first-two{
+      height: 31px;
+    }
+
+    .footer-logo-deleo{
+      margin-right: 0;
+    }
+
+    .footer-banner{
+      height: 30px;
+      margin-bottom: 2px;
     }
   }
   </style>
@@ -466,12 +507,6 @@
         <img id="poiFoto" alt="Immagine POI" />
       </div>
 
-      <section class="content-grid">
-
-        <div class="media">
-          <img id="poiFoto" />
-        </div>
-
         <div class="text">
           <p id="poiDescrizione" class="poi-text"></p>
         </div>
@@ -486,8 +521,6 @@
 	            <div class="photo-credit" id="photoCredit">Foto di Brundarte di Francesco Guadalupi</div>
 	          </div>
 	        </div>
-
-      </section>
 
     </section>
   </main>
